@@ -6,7 +6,9 @@ using RC_Framework;
 /*
  * GAME ART
  * road.png - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
+ * Car sprites - sujit1717 - http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio
  */
+
 namespace GPT_MarkedTute1
 {
     /// <summary>

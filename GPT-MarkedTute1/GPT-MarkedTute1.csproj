@@ -82,6 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
+    <Content Include="Content\car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\road.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
