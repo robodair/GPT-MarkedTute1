@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RC_Framework;
 
+/*
+ * GAME ART
+ * road.png - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
+ */
 namespace GPT_MarkedTute1
 {
     /// <summary>
@@ -12,6 +16,8 @@ namespace GPT_MarkedTute1
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        private ScrollBackGround roadBackground;
 
         public Game1()
         {
@@ -41,7 +47,15 @@ namespace GPT_MarkedTute1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // BACKGROUND
+            Texture2D background = Content.Load<Texture2D>("road.png");
+            roadBackground = new ScrollBackGround(background,
+                new Rectangle(0, 0, background.Width, background.Height),
+                new Rectangle(0, 25, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight - 50),
+                -5, // TODO MAKE A CONSTANT?
+                2
+                );
+
         }
 
         /// <summary>
@@ -63,7 +77,8 @@ namespace GPT_MarkedTute1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Update scrolling background
+            roadBackground.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -74,10 +89,14 @@ namespace GPT_MarkedTute1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Wheat);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            // Draw the scrolling background
+            roadBackground.Draw(spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
