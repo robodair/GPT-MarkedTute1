@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using RC_Framework;
 
 /*
@@ -24,6 +25,11 @@ namespace GPT_MarkedTute1
 
         // SPRITES
         Sprite3 playerCar;
+        SpriteList oncomingCars;
+        SpriteList withCars;
+
+        // Car Textures
+        Texture2D[] carTextures = new Texture2D[3];
 
         // BACKGROUND
         private ScrollBackGround roadBackground;
@@ -35,10 +41,19 @@ namespace GPT_MarkedTute1
         const int carYSpeed = 3;
         const int carXSpeed = 2;
 
+        Rectangle carArea;
         Rectangle topShoulder;
         Rectangle bottomShoulder;
         Rectangle disallowedZone;
         int rearEdge = 10;
+
+        Random rand;
+
+        int[] withLaneY = { 140, 205 };
+        int[] oncomingLaneY = { 273, 336 };
+
+        int oncomingSpeed = -6;
+        int withSpeed = -1;
 
         public Game1()
         {
@@ -54,7 +69,19 @@ namespace GPT_MarkedTute1
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            rand = new Random();
+
+            // Oncoming Sprite List
+            oncomingCars = new SpriteList(20);
+            // With Sprite List
+            withCars = new SpriteList(20);
+
+            // ENVIRONMENT
+            int shoulderOffset = 95;
+            topShoulder = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, shoulderOffset - 3);
+            bottomShoulder = new Rectangle(0, graphics.PreferredBackBufferHeight - shoulderOffset, graphics.PreferredBackBufferWidth, shoulderOffset);
+            disallowedZone = new Rectangle(400, 0, 400, graphics.PreferredBackBufferHeight);
+            carArea = new Rectangle(0, 0, graphics.PreferredBackBufferWidth + 200, graphics.PreferredBackBufferHeight);
 
             base.Initialize();
         }
@@ -71,12 +98,6 @@ namespace GPT_MarkedTute1
             // Required for drawing sprite info
             LineBatch.init(GraphicsDevice);
 
-            // ENVIRONMENT
-            int shoulderOffset = 95;
-            topShoulder = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, shoulderOffset-3);
-            bottomShoulder = new Rectangle(0, graphics.PreferredBackBufferHeight - shoulderOffset, graphics.PreferredBackBufferWidth, shoulderOffset);
-            disallowedZone = new Rectangle(400, 0, 400, graphics.PreferredBackBufferHeight);
-
             // BACKGROUND
             Texture2D background = Content.Load<Texture2D>("road.png");
             roadBackground = new ScrollBackGround(background,
@@ -92,7 +113,12 @@ namespace GPT_MarkedTute1
             playerCar.setHSoffset(new Vector2(128, 128));
             playerCar.setBB(25, 85, 210, 85);
             playerCar.setWidthHeight(120, 120);
-            playerCar.setMoveSpeed(10);
+
+            // OTHER CARS
+            carTextures[0] = Content.Load<Texture2D>("minivan.png");
+            carTextures[1] = Content.Load<Texture2D>("ute.png");
+            carTextures[2] = Content.Load<Texture2D>("taxi.png");
+
         }
 
         /// <summary>
@@ -120,6 +146,11 @@ namespace GPT_MarkedTute1
             if (keyboardState.IsKeyDown(Keys.B) && prevKeyboardState.IsKeyUp(Keys.B))
             {
                 drawInfo = !drawInfo;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
+            {
+                createNewCar();
             }
 
             // CAR MOVEMENT
@@ -177,6 +208,16 @@ namespace GPT_MarkedTute1
                 playerCar.moveByDeltaX(-Rectangle.Intersect(playerCar.getBoundingBoxAA(), disallowedZone).Width);
             }
 
+            oncomingCars.moveDeltaXY();
+            oncomingCars.removeIfOutside(carArea);
+            withCars.moveDeltaXY();
+            withCars.removeIfOutside(carArea);
+
+            // Detect Collissions with cars
+            int oncomingCollision = oncomingCars.collisionAA(playerCar);
+
+            int withCollision = withCars.collisionAA(playerCar);
+
             // Update scrolling background
             roadBackground.Update(gameTime);
 
@@ -199,6 +240,10 @@ namespace GPT_MarkedTute1
             // Draw Player Car
             playerCar.Draw(spriteBatch);
 
+            // Draw Cars
+            oncomingCars.Draw(spriteBatch);
+            withCars.Draw(spriteBatch);
+
             if (drawInfo)
             {
                 // CAR
@@ -209,10 +254,69 @@ namespace GPT_MarkedTute1
                 LineBatch.drawLineRectangle(spriteBatch, topShoulder, Color.BlueViolet);
                 LineBatch.drawLineRectangle(spriteBatch, bottomShoulder, Color.BlueViolet);
                 LineBatch.drawLineRectangle(spriteBatch, disallowedZone, Color.Fuchsia);
+                LineBatch.drawLineRectangle(spriteBatch, carArea, Color.DarkSalmon);
+
+                foreach (int y in oncomingLaneY)
+                {
+                    LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphics.PreferredBackBufferWidth, (float)y, Color.Aqua);
+                }
+                foreach (int y in withLaneY)
+                {
+                    LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphics.PreferredBackBufferWidth, (float)y, Color.Aqua);
+                }
+
+                oncomingCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
+                withCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
             }
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        void createNewCar()
+        {
+            int i_tex = rand.Next(0, carTextures.Length);
+            int i_lane = rand.Next(0, 2);
+            int i_oncoming = rand.Next(0, 2);
+
+            Sprite3 s;
+
+            if (i_oncoming == 1)
+            {
+                s = new Sprite3(true, carTextures[i_tex], graphics.PreferredBackBufferWidth + 200, oncomingLaneY[i_lane]);
+                s.setDisplayAngleDegrees(180);
+                s.setDeltaSpeed(new Vector2(oncomingSpeed, 0));
+                oncomingCars.addSpriteReuse(s);
+            }
+            else
+            {
+                s = new Sprite3(true, carTextures[i_tex], graphics.PreferredBackBufferWidth + 200, withLaneY[i_lane]);
+                s.setDeltaSpeed(new Vector2(withSpeed, 0));
+                withCars.addSpriteReuse(s);
+            }
+
+            s.setHSoffset(new Vector2(carTextures[i_tex].Width / 2, carTextures[i_tex].Height / 2));
+            s.setWidthHeight(120, 120);
+
+            // Per texture customisations
+            switch (i_tex)
+            {
+                case 0:
+                    // minivan
+                    s.setBB(35, 80, 195, 80);
+                    break;
+                case 1:
+                    // ute
+                    s.setBB(19, 75, 204, 85);
+                    break;
+                case 2:
+                    // taxi
+                    s.setBB(23, 77, 219, 90);
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }
