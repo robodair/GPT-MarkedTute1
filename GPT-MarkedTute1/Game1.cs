@@ -8,6 +8,7 @@ using RC_Framework;
  * GAME ART
  * road.png - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
  * Car sprites - sujit1717 - http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio
+ * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
  */
 
 namespace GPT_MarkedTute1
@@ -27,9 +28,13 @@ namespace GPT_MarkedTute1
         Sprite3 playerCar;
         SpriteList oncomingCars;
         SpriteList withCars;
+        SpriteList explosions;
 
         // Car Textures
         Texture2D[] carTextures = new Texture2D[3];
+
+        // Explosion Texture
+        Texture2D texExplosion;
 
         // BACKGROUND
         private ScrollBackGround roadBackground;
@@ -46,6 +51,8 @@ namespace GPT_MarkedTute1
         Rectangle bottomShoulder;
         Rectangle disallowedZone;
         int rearEdge = 10;
+
+        bool freeze; // global toggle whether or not the game is frozen
 
         Random rand;
 
@@ -69,12 +76,16 @@ namespace GPT_MarkedTute1
         /// </summary>
         protected override void Initialize()
         {
+            freeze = false;
+
             rand = new Random();
 
             // Oncoming Sprite List
             oncomingCars = new SpriteList(20);
             // With Sprite List
             withCars = new SpriteList(20);
+            // Explosions Sprite List
+            explosions = new SpriteList(20);
 
             // ENVIRONMENT
             int shoulderOffset = 95;
@@ -119,6 +130,9 @@ namespace GPT_MarkedTute1
             carTextures[1] = Content.Load<Texture2D>("ute.png");
             carTextures[2] = Content.Load<Texture2D>("taxi.png");
 
+            // EXPLOSION
+            texExplosion = Content.Load<Texture2D>("explosion.png");
+
         }
 
         /// <summary>
@@ -151,6 +165,17 @@ namespace GPT_MarkedTute1
             if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
             {
                 createNewCar();
+            }
+
+            // RESTART
+            if (keyboardState.IsKeyDown(Keys.R) && prevKeyboardState.IsKeyUp(Keys.R))
+            {
+                Initialize();
+            }
+
+            if (freeze)
+            {
+                return;
             }
 
             // CAR MOVEMENT
@@ -215,8 +240,21 @@ namespace GPT_MarkedTute1
 
             // Detect Collissions with cars
             int oncomingCollision = oncomingCars.collisionAA(playerCar);
-
             int withCollision = withCars.collisionAA(playerCar);
+
+            if (oncomingCollision != -1)
+            {
+                Rectangle collisionRect = oncomingCars[oncomingCollision].collisionRect(playerCar);
+                createExplosion(collisionRect.Center);
+                freeze = true;
+            }
+
+            if (withCollision != -1)
+            {
+                Rectangle collisionRect = withCars[withCollision].collisionRect(playerCar);
+                createExplosion(collisionRect.Center);
+                freeze = true;
+            }
 
             // Update scrolling background
             roadBackground.Update(gameTime);
@@ -244,6 +282,8 @@ namespace GPT_MarkedTute1
             oncomingCars.Draw(spriteBatch);
             withCars.Draw(spriteBatch);
 
+            explosions.Draw(spriteBatch);
+
             if (drawInfo)
             {
                 // CAR
@@ -267,6 +307,8 @@ namespace GPT_MarkedTute1
 
                 oncomingCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
                 withCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
+
+                explosions.drawInfo(spriteBatch, Color.MidnightBlue, Color.Black);
             }
 
             spriteBatch.End();
@@ -317,6 +359,15 @@ namespace GPT_MarkedTute1
                     break;
             }
 
+        }
+
+        void createExplosion(Point point)
+        {
+            float scale = 0.2f;
+            Sprite3 s = new Sprite3(true, texExplosion, point.X, point.Y);
+            s.setWidthHeight(256*scale, 256*scale);
+            s.setHSoffset(new Vector2(128, 128));
+            explosions.addSpriteReuse(s);
         }
     }
 }
