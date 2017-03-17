@@ -897,8 +897,8 @@ namespace RC_Framework
         /// </summary>
         public void moveByDeltaY(float dy)
         {
-            oldPos.X = pos.X;
-            pos.X = pos.X + dy;
+            oldPos.Y = pos.Y;
+            pos.Y = pos.Y + dy;
         }
 
         /// <summary>
