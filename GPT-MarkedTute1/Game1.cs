@@ -6,7 +6,7 @@ using RC_Framework;
 
 /*
  * GAME ART
- * road.png - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
+ * road - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
  * Car sprites - sujit1717 - http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio
  * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
  */
@@ -154,7 +154,7 @@ namespace GPT_MarkedTute1
             LineBatch.init(GraphicsDevice);
 
             // BACKGROUND
-            Texture2D background = Content.Load<Texture2D>("road.png");
+            Texture2D background = Content.Load<Texture2D>("images/road");
             roadBackground = new ScrollBackGround(background,
                 new Rectangle(0, 0, background.Width, background.Height),
                 new Rectangle(0, 25, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight - 50),
@@ -163,7 +163,7 @@ namespace GPT_MarkedTute1
                 );
 
             // PLAYER CAR
-            Texture2D texCar = Content.Load<Texture2D>("car.png");
+            Texture2D texCar = Content.Load<Texture2D>("images/car");
             playerCar = new Sprite3(true, texCar, 200, 200);
             playerCar.setHSoffset(new Vector2(128, 128));
             playerCar.setBB(25, 85, 210, 85);
@@ -177,18 +177,18 @@ namespace GPT_MarkedTute1
             playerHealthBar.offset = new Vector2(0, -12);
 
             // OTHER CARS
-            carTextures[0] = Content.Load<Texture2D>("minivan.png");
-            carTextures[1] = Content.Load<Texture2D>("ute.png");
-            carTextures[2] = Content.Load<Texture2D>("taxi.png");
+            carTextures[0] = Content.Load<Texture2D>("images/minivan");
+            carTextures[1] = Content.Load<Texture2D>("images/ute");
+            carTextures[2] = Content.Load<Texture2D>("images/taxi");
 
             // EXPLOSION
-            texExplosion = Content.Load<Texture2D>("explosion.png");
+            texExplosion = Content.Load<Texture2D>("images/explosion");
 
             // SIGNS
-            texSign = Content.Load<Texture2D>("sign.png");
+            texSign = Content.Load<Texture2D>("images/sign");
 
             // FONT
-            font = Content.Load<SpriteFont>("SpriteFont");
+            font = Content.Load<SpriteFont>("fonts/SpriteFont");
 
         }
 
