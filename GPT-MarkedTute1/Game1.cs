@@ -52,6 +52,10 @@ namespace GPT_MarkedTute1
         KeyboardState keyboardState;
 
         // ENVIRONMENT
+        String distString = "DISTANCE: {0:F2} km";
+        double distance;
+        String message;
+
         const int maxPlayerHealth = 1000;
         const int wallCollideDamagePerUpdate = 10;
         const int oncomingCollideDamagePerUpdate = 1000;//= 50;
@@ -88,6 +92,8 @@ namespace GPT_MarkedTute1
 
         float signSpawnInterval = 3000;
         float signSpawnTimer;
+
+        SpriteFont font; 
 
         public Game1()
         {
@@ -129,6 +135,7 @@ namespace GPT_MarkedTute1
             bottomShoulder = new Rectangle(0, graphics.PreferredBackBufferHeight - shoulderOffset, graphics.PreferredBackBufferWidth, shoulderOffset);
             disallowedZone = new Rectangle(400, 0, 400, graphics.PreferredBackBufferHeight);
             carArea = new Rectangle(0, 0, graphics.PreferredBackBufferWidth + 200, graphics.PreferredBackBufferHeight);
+            distance = 0;
 
             base.Initialize();
         }
@@ -178,6 +185,9 @@ namespace GPT_MarkedTute1
 
             // SIGNS
             texSign = Content.Load<Texture2D>("sign.png");
+
+            // FONT
+            font = Content.Load<SpriteFont>("SpriteFont");
 
         }
 
@@ -288,6 +298,10 @@ namespace GPT_MarkedTute1
             {
                 playerCar.moveByDeltaX(-Rectangle.Intersect(playerCar.getBoundingBoxAA(), disallowedZone).Width);
             }
+
+            // keep track of distance travelled
+            distance += 0.0005;
+            message = String.Format(distString, distance);
 
             // Move the other cars
             oncomingCars.moveDeltaXY();
@@ -481,6 +495,10 @@ namespace GPT_MarkedTute1
 
             // Draw Explosions
             explosions.Draw(spriteBatch);
+
+
+            // UI Text
+            spriteBatch.DrawString(font, message, new Vector2(3, 3), Color.Chocolate);
 
             if (drawInfo)
             {
