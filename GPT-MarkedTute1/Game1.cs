@@ -349,6 +349,7 @@ namespace GPT_MarkedTute1
             // Move signs
             signs.Update(gameTime);
             signs.moveDeltaXY();
+            signs.removeIfOutside(carArea);
 
             // Randomly create new cars and signs
             withCarSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
