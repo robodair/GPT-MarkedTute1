@@ -29,12 +29,16 @@ namespace GPT_MarkedTute1
         SpriteList oncomingCars;
         SpriteList withCars;
         SpriteList explosions;
+        SpriteList signs;
 
         // Car Textures
         Texture2D[] carTextures = new Texture2D[3];
 
         // Explosion Texture
         Texture2D texExplosion;
+
+        // Sign Texture
+        Texture2D texSign;
 
         // BACKGROUND
         private ScrollBackGround roadBackground;
@@ -59,8 +63,12 @@ namespace GPT_MarkedTute1
         int[] withLaneY = { 140, 205 };
         int[] oncomingLaneY = { 273, 336 };
 
+        int[] signLines = { 60, 415 };
+
         int oncomingSpeed = -6;
         int withSpeed = -1;
+
+        int backgroundScrollSpeed = -5;
 
         public Game1()
         {
@@ -86,6 +94,8 @@ namespace GPT_MarkedTute1
             withCars = new SpriteList(20);
             // Explosions Sprite List
             explosions = new SpriteList(20);
+            // Signs Sprite List
+            signs = new SpriteList(8);
 
             // ENVIRONMENT
             int shoulderOffset = 95;
@@ -114,7 +124,7 @@ namespace GPT_MarkedTute1
             roadBackground = new ScrollBackGround(background,
                 new Rectangle(0, 0, background.Width, background.Height),
                 new Rectangle(0, 25, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight - 50),
-                -5, // TODO MAKE A CONSTANT?
+                backgroundScrollSpeed,
                 2
                 );
 
@@ -132,6 +142,9 @@ namespace GPT_MarkedTute1
 
             // EXPLOSION
             texExplosion = Content.Load<Texture2D>("explosion.png");
+
+            // SIGNS
+            texSign = Content.Load<Texture2D>("sign.png");
 
         }
 
@@ -165,6 +178,7 @@ namespace GPT_MarkedTute1
             if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
             {
                 createNewCar();
+                createSign();
             }
 
             // RESTART
@@ -259,6 +273,32 @@ namespace GPT_MarkedTute1
             // Update scrolling background
             roadBackground.Update(gameTime);
 
+            // Move signs
+            signs.Update(gameTime);
+            signs.moveDeltaXY();
+
+            // Randomly create new cars and signs
+            withCarSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (withCarSpawnTimer < 0)
+            {
+                createNewCar(false);
+                withCarSpawnTimer = withCarSpawnInterval;
+            }
+
+            oncomingCarSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (oncomingCarSpawnTimer < 0)
+            {
+                createNewCar(true);
+                oncomingCarSpawnTimer = oncomingCarSpawnInterval;
+            }
+
+            signSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (signSpawnTimer < 0)
+            {
+                createSign();
+                signSpawnTimer = signSpawnInterval;
+            }
+
             base.Update(gameTime);
         }
 
@@ -282,6 +322,11 @@ namespace GPT_MarkedTute1
             oncomingCars.Draw(spriteBatch);
             withCars.Draw(spriteBatch);
 
+
+            // Draw Signs
+            signs.Draw(spriteBatch);
+
+            // Draw Explosions
             explosions.Draw(spriteBatch);
 
             if (drawInfo)
@@ -303,6 +348,10 @@ namespace GPT_MarkedTute1
                 foreach (int y in withLaneY)
                 {
                     LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphics.PreferredBackBufferWidth, (float)y, Color.Aqua);
+                }
+                foreach (int y in signLines)
+                {
+                    LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphics.PreferredBackBufferWidth, (float)y, Color.MediumAquamarine);
                 }
 
                 oncomingCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
@@ -368,6 +417,17 @@ namespace GPT_MarkedTute1
             s.setWidthHeight(256*scale, 256*scale);
             s.setHSoffset(new Vector2(128, 128));
             explosions.addSpriteReuse(s);
+        }
+
+        void createSign()
+        {
+            int y = signLines[rand.Next(0, 2)];
+            float scale = 1f;
+            Sprite3 sign = new Sprite3(true, texSign, graphics.PreferredBackBufferWidth + 200, y);
+            sign.setHSoffset(new Vector2(texSign.Width, texSign.Height));
+            sign.setWidthHeight(58 * scale, 55 * scale);
+            sign.setDeltaSpeed(new Vector2(backgroundScrollSpeed+1.5f, 0));
+            signs.addSpriteReuse(sign);
         }
     }
 }
