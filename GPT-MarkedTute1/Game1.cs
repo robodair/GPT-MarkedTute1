@@ -56,14 +56,15 @@ namespace GPT_MarkedTute1
         double distance;
         String message;
 
+        // Health metrics
         const int maxPlayerHealth = 1000;
         const int wallCollideDamagePerUpdate = 10;
-        const int oncomingCollideDamagePerUpdate = 1000;//= 50;
-        const int withCollideDamagePerUpdate = 500;//30;
+        const int oncomingCollideDamagePerUpdate = 100;
+        const int withCollideDamagePerUpdate = 80;
 
 
-        const int carYSpeed = 3;
-        const int carXSpeed = 2;
+        const int carYSpeed = 4;
+        const int carXSpeed = 3;
 
         Rectangle carArea;
         Rectangle topShoulder;
