@@ -404,14 +404,10 @@ namespace GPT_MT_1_monogame3_6
                 {
                     car = cars[i_car];
                     int carX = (int)car.getPosX();
-                    Console.WriteLine("Testing" + carX + ">" + 400);
-                    Console.WriteLine(carX > 400);
 
                     if (carX > 400)
                     // Only lane change this car if it's in the 'disallowed zone' so that it doesn't run into the player
                     {
-                        Console.WriteLine("IF");
-                        Console.WriteLine("Car at" + car.getPos());
                         int angleDirection = car.getDeltaSpeed().X == oncomingSpeed ? 1 : -1; // Invert angles for the with cars
 
                         if (car.getPosY() > lanes[UPPER_LANE] + 10) // if car is in the UPPER_LANE
