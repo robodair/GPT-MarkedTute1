@@ -45,6 +45,31 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RC_Framework\RC_GameState.cs" />
+    <Compile Include="RC_Framework\RC_GUI.cs" />
+    <Compile Include="RC_Framework\RC_LineBatch.cs" />
+    <Compile Include="RC_Framework\RC_PanZoom.cs" />
+    <Compile Include="RC_Framework\RC_Particle.cs" />
+    <Compile Include="RC_Framework\RC_PositionFactory.cs" />
+    <Compile Include="RC_Framework\RC_RenderableAttached.cs" />
+    <Compile Include="RC_Framework\RC_RenderableBounded.cs" />
+    <Compile Include="RC_Framework\RC_RenderableMulti.cs" />
+    <Compile Include="RC_Framework\RC_RenderableParents.cs" />
+    <Compile Include="RC_Framework\RC_Renderables.cs" />
+    <Compile Include="RC_Framework\RC_Sound.cs" />
+    <Compile Include="RC_Framework\RC_Sprite12Step.cs" />
+    <Compile Include="RC_Framework\RC_Sprite3.cs" />
+    <Compile Include="RC_Framework\RC_SpriteList.cs" />
+    <Compile Include="RC_Framework\RC_Stock0.cs" />
+    <Compile Include="RC_Framework\RC_Stock1.cs" />
+    <Compile Include="RC_Framework\RC_StringList.cs" />
+    <Compile Include="RC_Framework\RC_Surface.cs" />
+    <Compile Include="RC_Framework\RC_Texture.cs" />
+    <Compile Include="RC_Framework\RC_Utils2.cs" />
+    <Compile Include="RC_Framework\RC_Utils3.cs" />
+    <Compile Include="RC_Framework\RC_UtilTex.cs" />
+    <Compile Include="RC_Framework\RC_UtilTexRenderables.cs" />
+    <Compile Include="RC_Framework\RC_Waypoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
