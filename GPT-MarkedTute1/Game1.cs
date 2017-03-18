@@ -31,6 +31,10 @@ namespace GPT_MarkedTute1
         SpriteList explosions;
         SpriteList signs;
 
+        // Lane Changing Cars
+        Sprite3 withLaneChangingCar;
+        Sprite3 oncomingLaneChangingCar;
+
         // Car Textures
         Texture2D[] carTextures = new Texture2D[3];
         HealthBar playerHealthBar;
@@ -105,8 +109,10 @@ namespace GPT_MarkedTute1
 
             // Oncoming Sprite List
             oncomingCars = new SpriteList(20);
+            oncomingLaneChangingCar = null;
             // With Sprite List
             withCars = new SpriteList(20);
+            withLaneChangingCar = null;
             // Explosions Sprite List
             explosions = new SpriteList(20);
             // Signs Sprite List
@@ -233,7 +239,6 @@ namespace GPT_MarkedTute1
             {
                 // Car Down
                 playerCar.setDisplayAngleDegrees(10);
-                playerCar.setMoveAngleDegrees(90);
                 playerCar.moveByDeltaY(carYSpeed);
             }
 
@@ -284,10 +289,14 @@ namespace GPT_MarkedTute1
                 playerCar.moveByDeltaX(-Rectangle.Intersect(playerCar.getBoundingBoxAA(), disallowedZone).Width);
             }
 
+            // Move the other cars
             oncomingCars.moveDeltaXY();
             oncomingCars.removeIfOutside(carArea);
             withCars.moveDeltaXY();
             withCars.removeIfOutside(carArea);
+
+            changeCarLane(ref oncomingLaneChangingCar, oncomingLaneY, ref oncomingCars);
+            changeCarLane(ref withLaneChangingCar, withLaneY, ref withCars);
 
             // Detect Collisions with cars
             int oncomingCollision = oncomingCars.collisionAA(playerCar);
@@ -366,6 +375,85 @@ namespace GPT_MarkedTute1
             base.Update(gameTime);
         }
 
+        private void changeCarLane(ref Sprite3 car, int[] lanes, ref SpriteList cars)
+        {
+            const int UPPER_LANE = 0;
+            const int LOWER_LANE = 1;
+
+            if (car == null && cars.count() > 0)
+            {
+                // Select a random car to do lane changing with
+                int i_car = rand.Next(0, cars.count());
+                if (i_car != -1) // Make sure the car exists
+                {
+                    car = cars[i_car];
+                    int carX = (int) car.getPosX();
+                    Console.WriteLine("Testing" + carX + ">" + 400);
+                    Console.WriteLine(carX > 400);
+
+                    if (carX > 400)
+                    // Only lane change this car if it's in the 'disallowed zone' so that it doesn't run into the player
+                    {
+                        Console.WriteLine("IF");
+                        Console.WriteLine("Car at" + car.getPos());
+                        int angleDirection = car.getDeltaSpeed().X == oncomingSpeed ? 1 : -1; // Invert angles for the with cars
+
+                        if (car.getPosY() > lanes[UPPER_LANE] + 10) // if car is in the UPPER_LANE
+                        {
+                            // turn to LOWER_LANE
+                            car.setDisplayAngleOffsetDegrees(10 * angleDirection);
+                            car.setDeltaSpeed(
+                                car.getDeltaSpeed() + new Vector2(0, -1)
+                                );
+                        }
+                        else // car is in LOWER_LANE
+                        {
+                            // Turn to UPPER_LANE
+                            car.setDisplayAngleOffsetDegrees(-10 * angleDirection);
+                            car.setDeltaSpeed(
+                                car.getDeltaSpeed() + new Vector2(0, 1)
+                                );
+                        }
+                    }
+                }
+
+            }
+            else if (car != null)
+            {
+                if (car.getPosX() < 0)
+                {
+                    car = null;
+                }
+                // If the car has reached either lane, force it's position to be correct
+                else if (car.getDeltaSpeed().Y > 0) // if we're moving down
+                {
+                    if (car.getPosY() >= lanes[LOWER_LANE]) // if we've reached our target
+                    {
+                        // stop the rotation and up movement
+                        car.setPosY(lanes[LOWER_LANE]);
+                        car.setDeltaSpeed(
+                            new Vector2(car.getDeltaSpeed().X, 0)
+                            );
+                        car.setDisplayAngleOffsetDegrees(0);
+                        car = null;
+                    }
+                }
+                else // else we're moving up
+                {
+                    if (car.getPosY() <= lanes[UPPER_LANE]) // if we've reached our target
+                    {
+                        // stop the rotation and down movement
+                        car.setPosY(lanes[UPPER_LANE]);
+                        car.setDeltaSpeed(
+                            new Vector2(car.getDeltaSpeed().X, 0)
+                            );
+                        car.setDisplayAngleOffsetDegrees(0);
+                        car = null;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -418,8 +506,10 @@ namespace GPT_MarkedTute1
                     LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphics.PreferredBackBufferWidth, (float)y, Color.MediumAquamarine);
                 }
 
-                oncomingCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
-                withCars.drawInfo(spriteBatch, Color.DarkMagenta, Color.Goldenrod);
+                oncomingCars.drawInfo(spriteBatch, Color.Turquoise, Color.Goldenrod);
+                withCars.drawInfo(spriteBatch, Color.Turquoise, Color.Goldenrod);
+                oncomingCars.drawRect4(spriteBatch, Color.HotPink);
+                withCars.drawRect4(spriteBatch, Color.HotPink);
 
                 explosions.drawInfo(spriteBatch, Color.MidnightBlue, Color.Black);
             }
