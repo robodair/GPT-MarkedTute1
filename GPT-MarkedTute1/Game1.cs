@@ -33,6 +33,7 @@ namespace GPT_MarkedTute1
 
         // Car Textures
         Texture2D[] carTextures = new Texture2D[3];
+        HealthBar playerHealthBar;
 
         // Explosion Texture
         Texture2D texExplosion;
@@ -47,6 +48,12 @@ namespace GPT_MarkedTute1
         KeyboardState keyboardState;
 
         // ENVIRONMENT
+        const int maxPlayerHealth = 1000;
+        const int wallCollideDamagePerUpdate = 10;
+        const int oncomingCollideDamagePerUpdate = 1000;//= 50;
+        const int withCollideDamagePerUpdate = 500;//30;
+
+
         const int carYSpeed = 3;
         const int carXSpeed = 2;
 
@@ -66,9 +73,17 @@ namespace GPT_MarkedTute1
         int[] signLines = { 60, 415 };
 
         int oncomingSpeed = -6;
-        int withSpeed = -1;
+        int withSpeed = -2;
 
         int backgroundScrollSpeed = -5;
+
+        float withCarSpawnInterval = 2500;
+        float oncomingCarSpawnInterval = 800;
+        float withCarSpawnTimer;
+        float oncomingCarSpawnTimer;
+
+        float signSpawnInterval = 3000;
+        float signSpawnTimer;
 
         public Game1()
         {
@@ -96,6 +111,11 @@ namespace GPT_MarkedTute1
             explosions = new SpriteList(20);
             // Signs Sprite List
             signs = new SpriteList(8);
+
+            // TIMERS
+            withCarSpawnTimer = withCarSpawnInterval;
+            oncomingCarSpawnTimer = oncomingCarSpawnInterval;
+            signSpawnTimer = signSpawnInterval;
 
             // ENVIRONMENT
             int shoulderOffset = 95;
@@ -129,11 +149,18 @@ namespace GPT_MarkedTute1
                 );
 
             // PLAYER CAR
-            Texture2D texViper = Content.Load<Texture2D>("car.png");
-            playerCar = new Sprite3(true, texViper, 200, 200);
+            Texture2D texCar = Content.Load<Texture2D>("car.png");
+            playerCar = new Sprite3(true, texCar, 200, 200);
             playerCar.setHSoffset(new Vector2(128, 128));
             playerCar.setBB(25, 85, 210, 85);
             playerCar.setWidthHeight(120, 120);
+            playerCar.hitPoints = maxPlayerHealth;
+            playerCar.maxHitPoints = maxPlayerHealth;
+
+            // HealthBar
+            playerHealthBar = new HealthBar(Color.Green, Color.Black, Color.Red, 5, true);
+            playerHealthBar.parent = playerCar;
+            playerHealthBar.offset = new Vector2(0, -12);
 
             // OTHER CARS
             carTextures[0] = Content.Load<Texture2D>("minivan.png");
@@ -177,7 +204,7 @@ namespace GPT_MarkedTute1
 
             if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
             {
-                createNewCar();
+                createNewCar(false);
                 createSign();
             }
 
@@ -228,13 +255,23 @@ namespace GPT_MarkedTute1
             // Detect collisions with the sides
             if (playerCar.getBoundingBoxAA().Intersects(topShoulder))
             {
-                playerCar.moveByDeltaY(Rectangle.Intersect(playerCar.getBoundingBoxAA(), topShoulder).Height);
-                // TODO: Take down car hitpoints
+                Rectangle collisionRect = Rectangle.Intersect(playerCar.getBoundingBoxAA(), topShoulder);
+                playerCar.moveByDeltaY(collisionRect.Height);
+                playerCar.hitPoints -= wallCollideDamagePerUpdate;
+                if (playerCar.hitPoints <= 0)
+                {
+                    createExplosion(new Point(collisionRect.Right, collisionRect.Center.Y));
+                }
             }
             else if (playerCar.getBoundingBoxAA().Intersects(bottomShoulder))
             {
-                playerCar.moveByDeltaY(-Rectangle.Intersect(playerCar.getBoundingBoxAA(), bottomShoulder).Height);
-                // TODO: Take down car hitpoints
+                Rectangle collisionRect = Rectangle.Intersect(playerCar.getBoundingBoxAA(), bottomShoulder);
+                playerCar.moveByDeltaY(-collisionRect.Height);
+                playerCar.hitPoints -= wallCollideDamagePerUpdate;
+                if (playerCar.hitPoints <= 0)
+                {
+                    createExplosion(collisionRect.Center);
+                }
             }
 
             // Detect being outside the allowed area and move back into the allowed area
@@ -252,22 +289,49 @@ namespace GPT_MarkedTute1
             withCars.moveDeltaXY();
             withCars.removeIfOutside(carArea);
 
-            // Detect Collissions with cars
+            // Detect Collisions with cars
             int oncomingCollision = oncomingCars.collisionAA(playerCar);
             int withCollision = withCars.collisionAA(playerCar);
 
             if (oncomingCollision != -1)
             {
-                Rectangle collisionRect = oncomingCars[oncomingCollision].collisionRect(playerCar);
-                createExplosion(collisionRect.Center);
-                freeze = true;
+                if (Util.collisionRect4Rect4Points(oncomingCars[oncomingCollision].bbTemp, playerCar.bbTemp))
+                {
+                    Rectangle collisionRect = oncomingCars[oncomingCollision].collisionRect(playerCar);
+                    playerCar.hitPoints -= oncomingCollideDamagePerUpdate;
+                    if (playerCar.hitPoints <= 0)
+                    {
+                        createExplosion(collisionRect.Center);
+                    }
+                }
             }
 
             if (withCollision != -1)
             {
-                Rectangle collisionRect = withCars[withCollision].collisionRect(playerCar);
-                createExplosion(collisionRect.Center);
+                if (Util.collisionRect4Rect4Points(withCars[withCollision].bbTemp, playerCar.bbTemp))
+                {
+                    Rectangle collisionRect = withCars[withCollision].collisionRect(playerCar);
+                    playerCar.hitPoints -= withCollideDamagePerUpdate;
+                    if (playerCar.hitPoints <= 0)
+                    {
+                        createExplosion(collisionRect.Center);
+                    }
+                }
+            }
+
+            // Freeze Game if Player HP get to 0
+            if (playerCar.hitPoints <= 0)
+            {
+                playerCar.hitPoints = 0;
                 freeze = true;
+            }
+            else
+            {
+                playerCar.hitPoints++;
+                if (playerCar.hitPoints > maxPlayerHealth)
+                {
+                    playerCar.hitPoints = maxPlayerHealth;
+                }
             }
 
             // Update scrolling background
@@ -315,13 +379,13 @@ namespace GPT_MarkedTute1
             // Draw the scrolling background
             roadBackground.Draw(spriteBatch);
 
-            // Draw Player Car
-            playerCar.Draw(spriteBatch);
-
             // Draw Cars
             oncomingCars.Draw(spriteBatch);
             withCars.Draw(spriteBatch);
 
+            // Draw Player Car
+            playerCar.Draw(spriteBatch);
+            playerHealthBar.Draw(spriteBatch);
 
             // Draw Signs
             signs.Draw(spriteBatch);
@@ -364,11 +428,20 @@ namespace GPT_MarkedTute1
             base.Draw(gameTime);
         }
 
-        void createNewCar()
+        void createNewCar(bool oncoming)
         {
             int i_tex = rand.Next(0, carTextures.Length);
             int i_lane = rand.Next(0, 2);
-            int i_oncoming = rand.Next(0, 2);
+            int i_oncoming;
+             
+            if (oncoming)
+            {
+                i_oncoming = 1;
+            }
+            else
+            {
+                i_oncoming = 0;
+            }
 
             Sprite3 s;
 
@@ -412,7 +485,7 @@ namespace GPT_MarkedTute1
 
         void createExplosion(Point point)
         {
-            float scale = 0.2f;
+            float scale = 0.5f;
             Sprite3 s = new Sprite3(true, texExplosion, point.X, point.Y);
             s.setWidthHeight(256*scale, 256*scale);
             s.setHSoffset(new Vector2(128, 128));
