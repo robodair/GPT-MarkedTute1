@@ -500,6 +500,7 @@ namespace GPT_MarkedTute1
 
             // UI Text
             spriteBatch.DrawString(font, message, new Vector2(3, 3), Color.Chocolate);
+            spriteBatch.DrawString(font, "Copyright 2016 - Alisdair Robertson", new Vector2(3, graphics.PreferredBackBufferHeight - 23), Color.BurlyWood);
 
             if (drawInfo)
             {
