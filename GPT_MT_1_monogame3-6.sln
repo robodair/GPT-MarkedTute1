@@ -10,6 +10,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Windows Release|Any CPU = Windows Release|Any CPU
+		MacOS Release|Any CPU = MacOS Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -18,6 +19,8 @@ Global
 		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Windows Release|Any CPU.ActiveCfg = Windows Release|Any CPU
 		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Windows Release|Any CPU.Build.0 = Windows Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.MacOS Release|Any CPU.ActiveCfg = MacOS Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.MacOS Release|Any CPU.Build.0 = MacOS Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
