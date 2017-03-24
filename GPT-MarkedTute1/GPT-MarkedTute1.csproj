@@ -10,7 +10,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GPT_MT_1_monogame3_6</RootNamespace>
-    <AssemblyName>GPT_MT_1_monogame3-6</AssemblyName>
+    <AssemblyName>GPT-MarkedTute1</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOS Release|AnyCPU' ">
     <Optimize>false</Optimize>
-    <OutputPath>bin\MacOS Release\GPT_MT_1_monogame3-6.app\Contents</OutputPath>
+    <OutputPath>bin\MacOS Release\GPT-MarkedTute1.app\Contents</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
@@ -143,7 +143,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />
-    <None Include="MacOS\GPT_MT_1_monogame3-6">
+    <None Include="MacOS\GPT-MarkedTute1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

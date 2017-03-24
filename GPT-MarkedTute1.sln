@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPT_MT_1_monogame3-6", "GPT_MT_1_monogame3-6\GPT_MT_1_monogame3-6.csproj", "{0D799B38-0BCB-4907-AA6C-7662AF65E27E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPT-MarkedTute1", "GPT-MarkedTute1\GPT-MarkedTute1.csproj", "{0D799B38-0BCB-4907-AA6C-7662AF65E27E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

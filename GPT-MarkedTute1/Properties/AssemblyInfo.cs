@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GPT_MT_1_monogame3-6")]
-[assembly: AssemblyProduct("GPT_MT_1_monogame3-6")]
+[assembly: AssemblyTitle("GPT-MarkedTute1")]
+[assembly: AssemblyProduct("GPT-MarkedTute1")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
