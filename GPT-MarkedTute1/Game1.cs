@@ -11,7 +11,7 @@ using RC_Framework;
  * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
  */
 
-namespace GPT_MarkedTute1
+namespace GPT_MT_1_monogame3_6
 {
     /// <summary>
     /// This is the main type for your game.
@@ -94,7 +94,7 @@ namespace GPT_MarkedTute1
         float signSpawnInterval = 3000;
         float signSpawnTimer;
 
-        SpriteFont font; 
+        SpriteFont font;
 
         public Game1()
         {
@@ -265,7 +265,7 @@ namespace GPT_MarkedTute1
             }
             else
             {
-                playerCar.moveByDeltaX(-carXSpeed/3f); // Fall back if not being moved forward explicitly
+                playerCar.moveByDeltaX(-carXSpeed / 3f); // Fall back if not being moved forward explicitly
             }
 
             // Detect collisions with the sides
@@ -403,15 +403,11 @@ namespace GPT_MarkedTute1
                 if (i_car != -1) // Make sure the car exists
                 {
                     car = cars[i_car];
-                    int carX = (int) car.getPosX();
-                    Console.WriteLine("Testing" + carX + ">" + 400);
-                    Console.WriteLine(carX > 400);
+                    int carX = (int)car.getPosX();
 
                     if (carX > 400)
                     // Only lane change this car if it's in the 'disallowed zone' so that it doesn't run into the player
                     {
-                        Console.WriteLine("IF");
-                        Console.WriteLine("Car at" + car.getPos());
                         int angleDirection = car.getDeltaSpeed().X == oncomingSpeed ? 1 : -1; // Invert angles for the with cars
 
                         if (car.getPosY() > lanes[UPPER_LANE] + 10) // if car is in the UPPER_LANE
@@ -500,7 +496,7 @@ namespace GPT_MarkedTute1
 
             // UI Text
             spriteBatch.DrawString(font, message, new Vector2(3, 3), Color.Chocolate);
-            spriteBatch.DrawString(font, "Copyright 2016 - Alisdair Robertson", new Vector2(3, graphics.PreferredBackBufferHeight - 23), Color.BurlyWood);
+            spriteBatch.DrawString(font, "Copyright 2017 - Alisdair Robertson", new Vector2(3, graphics.PreferredBackBufferHeight - 23), Color.BurlyWood);
 
             if (drawInfo)
             {
@@ -544,7 +540,7 @@ namespace GPT_MarkedTute1
             int i_tex = rand.Next(0, carTextures.Length);
             int i_lane = rand.Next(0, 2);
             int i_oncoming;
-             
+
             if (oncoming)
             {
                 i_oncoming = 1;
@@ -598,7 +594,7 @@ namespace GPT_MarkedTute1
         {
             float scale = 0.5f;
             Sprite3 s = new Sprite3(true, texExplosion, point.X, point.Y);
-            s.setWidthHeight(256*scale, 256*scale);
+            s.setWidthHeight(256 * scale, 256 * scale);
             s.setHSoffset(new Vector2(128, 128));
             explosions.addSpriteReuse(s);
         }
@@ -610,7 +606,7 @@ namespace GPT_MarkedTute1
             Sprite3 sign = new Sprite3(true, texSign, graphics.PreferredBackBufferWidth + 200, y);
             sign.setHSoffset(new Vector2(texSign.Width, texSign.Height));
             sign.setWidthHeight(58 * scale, 55 * scale);
-            sign.setDeltaSpeed(new Vector2(backgroundScrollSpeed+1.5f, 0));
+            sign.setDeltaSpeed(new Vector2(backgroundScrollSpeed + 1.5f, 0));
             signs.addSpriteReuse(sign);
         }
     }

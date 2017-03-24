@@ -3,18 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPT-MarkedTute1", "GPT-MarkedTute1\GPT-MarkedTute1.csproj", "{5DFA238A-7266-4354-9DC3-5D4F8C512C0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPT-MarkedTute1", "GPT-MarkedTute1\GPT-MarkedTute1.csproj", "{0D799B38-0BCB-4907-AA6C-7662AF65E27E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Windows Release|Any CPU = Windows Release|Any CPU
+		MacOS Release|Any CPU = MacOS Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5DFA238A-7266-4354-9DC3-5D4F8C512C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DFA238A-7266-4354-9DC3-5D4F8C512C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DFA238A-7266-4354-9DC3-5D4F8C512C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DFA238A-7266-4354-9DC3-5D4F8C512C0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Windows Release|Any CPU.ActiveCfg = Windows Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.Windows Release|Any CPU.Build.0 = Windows Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.MacOS Release|Any CPU.ActiveCfg = MacOS Release|Any CPU
+		{0D799B38-0BCB-4907-AA6C-7662AF65E27E}.MacOS Release|Any CPU.Build.0 = MacOS Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
