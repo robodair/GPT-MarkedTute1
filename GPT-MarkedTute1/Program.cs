@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GPT_MarkedTute1
+namespace GPT_MT_1_monogame3_6
 {
     /// <summary>
     /// The main class.
