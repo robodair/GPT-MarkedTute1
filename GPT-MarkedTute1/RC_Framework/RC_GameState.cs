@@ -15,12 +15,13 @@ namespace RC_Framework
 {
 //  *********************************************************  RC_GameStateParent  *************************************************************
     /// <summary>
-    /// Parent Stagre class all levels inherit from this
+    /// Parent State class, all levels inherit from this
     /// </summary>
     public abstract class RC_GameStateParent
     {
         // the following block of variables are candidates to become global variables used in many places 
         public static GraphicsDevice graphicsDevice;
+        public static GraphicsDeviceManager graphicsManager;
         public static SpriteBatch spriteBatch;
         
         public static ContentManager Content;
@@ -34,7 +35,7 @@ namespace RC_Framework
         public static MouseState currentMouseState; // for convenience not really needed
         public static MouseState previousMouseState; // for convenience not really needed
 
-        public static SpriteFont font1; // use if you want again not really needed
+        public static SpriteFont font; // use if you want again not really needed
 
         public virtual void InitializeLevel(GraphicsDevice g, SpriteBatch s, ContentManager c, RC_GameStateManager lm)
         {
