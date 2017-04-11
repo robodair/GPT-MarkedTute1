@@ -9,7 +9,7 @@
     <ProjectGuid>{0D799B38-0BCB-4907-AA6C-7662AF65E27E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GPT_MT_1_monogame3_6</RootNamespace>
+    <RootNamespace>GPT_MarkedTute1</RootNamespace>
     <AssemblyName>GPT-MarkedTute1</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
