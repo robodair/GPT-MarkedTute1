@@ -130,6 +130,7 @@ namespace RC_Framework
         public void pushLevel(int levNum)
         {
             prevState = cur;
+            prevState.ExitLevel();
             states[levNum].EnterLevel(curLevNum);
             levelStack[sp] = curLevNum;
             cur = states[levNum];
@@ -144,6 +145,7 @@ namespace RC_Framework
             cur = states[levelStack[sp]];
             curLevNum = levelStack[sp];
             prevState.ExitLevel();
+            cur.EnterLevel(levelStack[sp+1]);
 
             RC_GameStateParent.prevKeyState = Keyboard.GetState();
             RC_GameStateParent.keyState = Keyboard.GetState(); // fix legacy keystate issues
