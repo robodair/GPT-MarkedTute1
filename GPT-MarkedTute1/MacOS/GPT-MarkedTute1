@@ -2,4 +2,4 @@
 DIR="$(dirname "${BASH_SOURCE[0]}")"
 DIR="$(dirname "$DIR")"
 echo Using $DIR
-/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono "$DIR/GPT-MarkedTute1.exe"
+/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono64 "$DIR/GPT-MarkedTute1.exe"
