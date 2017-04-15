@@ -104,3 +104,9 @@
 /processorParam:TextureFormat=Color
 /build:images/ute.png
 
+#begin sfx/carcrash_16.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx/carcrash_16.wav
+

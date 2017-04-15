@@ -9,6 +9,7 @@ using RC_Framework;
  * road - adapted from Alucard - http://opengameart.org/content/2d-top-down-highway-background
  * Car sprites - sujit1717 - http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio
  * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
+ * Crash sound effect - squareal - https://freesound.org/people/squareal/sounds/237375/
  */
 
 namespace GPT_MarkedTute1
