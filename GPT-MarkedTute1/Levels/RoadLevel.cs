@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 using RC_Framework;
 
@@ -81,6 +82,8 @@ namespace GPT_MarkedTute1
 		float signSpawnInterval = 3000;
 		float signSpawnTimer;
 
+        LimitSound crashSound;
+
 		public RoadLevel() { }
 
 		public override void EnterLevel(int fromLevelNum)
@@ -150,6 +153,9 @@ namespace GPT_MarkedTute1
 
 			// SIGNS
 			texSign = Content.Load<Texture2D>("images/sign");
+
+            // Sound
+            crashSound = new LimitSound(Content.Load<SoundEffect>("sfx/carcrash_16"), 1);
 
 			Reset();
 
@@ -589,6 +595,7 @@ namespace GPT_MarkedTute1
 
 		void createExplosion(Point point)
 		{
+            crashSound.playSoundIfOk();
 			float scale = 0.5f;
 			Sprite3 s = new Sprite3(true, texExplosion, point.X, point.Y);
 			s.setWidthHeight(256 * scale, 256 * scale);
