@@ -26,7 +26,7 @@ namespace RC_Framework
         SoundEffectInstance[] sei;
         int numOfSounds;
         int counter;
-        int soundsThisTick=0;
+        int soundsThisTick = 0;
 
         /// <summary>
         /// Create it using a soundeffect
@@ -55,7 +55,7 @@ namespace RC_Framework
 
         private void init()
         {
-            soundsThisTick=0;
+            soundsThisTick = 0;
             counter = 0;
             sei = new SoundEffectInstance[numOfSounds];
             for (int i = 0; i < numOfSounds; i++)
@@ -97,8 +97,14 @@ namespace RC_Framework
         {
             soundsThisTick = 0;
         }
-             
-    }
 
+        public void stopAll()
+        {
+            foreach (SoundEffectInstance sound in sei)
+            {
+                sound.Stop();
+            }
+        }
+    }
 
 }
