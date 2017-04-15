@@ -193,11 +193,16 @@ namespace GPT_MarkedTute1
 			// Scoring
 			distance = 0;
 			message = String.Format(distString, distance);
+
+            // Stop Sound
+            crashSound.StopAll();
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			getKeyboardAndMouse();
+
+            crashSound.Update(gameTime);
 
 			if (willPause) // if the will pause flag is true show pause screen
 			{

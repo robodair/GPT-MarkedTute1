@@ -98,7 +98,7 @@ namespace RC_Framework
             soundsThisTick = 0;
         }
 
-        public void stopAll()
+        public void StopAll()
         {
             foreach (SoundEffectInstance sound in sei)
             {
