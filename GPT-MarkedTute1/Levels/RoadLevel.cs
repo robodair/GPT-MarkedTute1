@@ -26,7 +26,7 @@ namespace GPT_MarkedTute1
 		Sprite3 oncomingLaneChangingCar;
 
 		// Car Textures
-		Texture2D[] carTextures = new Texture2D[3];
+		Texture2D[] carTextures = new Texture2D[4];
 		HealthBar playerHealthBar;
 
 		// Explosion Texture
@@ -147,6 +147,7 @@ namespace GPT_MarkedTute1
 			carTextures[0] = Content.Load<Texture2D>("images/minivan");
 			carTextures[1] = Content.Load<Texture2D>("images/ute");
 			carTextures[2] = Content.Load<Texture2D>("images/taxi");
+            carTextures[3] = Content.Load<Texture2D>("images/police");
 
 			// EXPLOSION
 			texExplosion = Content.Load<Texture2D>("images/explosion");
@@ -309,8 +310,10 @@ namespace GPT_MarkedTute1
 			// ===== OTHER CARS =====
 			oncomingCars.moveDeltaXY();
 			oncomingCars.removeIfOutside(carArea);
+            oncomingCars.animationTick();
 			withCars.moveDeltaXY();
 			withCars.removeIfOutside(carArea);
+            withCars.animationTick();
 
 
 			changeCarLane(ref oncomingLaneChangingCar, oncomingLaneY, ref oncomingCars);
@@ -424,7 +427,7 @@ namespace GPT_MarkedTute1
 						if (car.getPosY() > lanes[UPPER_LANE] + 10) // if car is in the UPPER_LANE
 						{
 							// turn to LOWER_LANE
-							car.setDisplayAngleOffsetDegrees(10 * angleDirection);
+                            car.setDisplayAngleDegrees(10 * angleDirection);
 							car.setDeltaSpeed(
 								car.getDeltaSpeed() + new Vector2(0, -1)
 								);
@@ -432,7 +435,7 @@ namespace GPT_MarkedTute1
 						else // car is in LOWER_LANE
 						{
 							// Turn to UPPER_LANE
-							car.setDisplayAngleOffsetDegrees(-10 * angleDirection);
+                            car.setDisplayAngleDegrees(-10 * angleDirection);
 							car.setDeltaSpeed(
 								car.getDeltaSpeed() + new Vector2(0, 1)
 								);
@@ -457,7 +460,7 @@ namespace GPT_MarkedTute1
 						car.setDeltaSpeed(
 							new Vector2(car.getDeltaSpeed().X, 0)
 							);
-						car.setDisplayAngleOffsetDegrees(0);
+						car.setDisplayAngleDegrees(0);
 						car = null;
 					}
 				}
@@ -470,7 +473,7 @@ namespace GPT_MarkedTute1
 						car.setDeltaSpeed(
 							new Vector2(car.getDeltaSpeed().X, 0)
 							);
-						car.setDisplayAngleOffsetDegrees(0);
+                        car.setDisplayAngleDegrees(0);
 						car = null;
 					}
 				}
@@ -543,26 +546,17 @@ namespace GPT_MarkedTute1
 
 		void createNewCar(bool oncoming)
 		{
-			int i_tex = rand.Next(0, carTextures.Length);
+            const int policeTextureID = 3;
+            int i_tex = rand.Next(0, carTextures.Length);
 			int i_lane = rand.Next(0, 2);
-			int i_oncoming;
-
-			if (oncoming)
-			{
-				i_oncoming = 1;
-			}
-			else
-			{
-				i_oncoming = 0;
-			}
 
 			Sprite3 s;
 
-			if (i_oncoming == 1)
+			if (oncoming)
 			{
 				s = new Sprite3(true, carTextures[i_tex], graphicsManager.PreferredBackBufferWidth + 200,
 								oncomingLaneY[i_lane]);
-				s.setDisplayAngleDegrees(180);
+				s.setDisplayAngleOffsetDegrees(180);
 				s.setDeltaSpeed(new Vector2(oncomingSpeed, 0));
 				oncomingCars.addSpriteReuse(s);
 			}
@@ -577,25 +571,68 @@ namespace GPT_MarkedTute1
 			s.setHSoffset(new Vector2(carTextures[i_tex].Width / 2, carTextures[i_tex].Height / 2));
 			s.setWidthHeight(120, 120);
 
-			// Per texture customisations
-			switch (i_tex)
-			{
-				case 0:
-					// minivan
-					s.setBB(35, 80, 195, 80);
-					break;
-				case 1:
-					// ute
-					s.setBB(19, 75, 204, 85);
-					break;
-				case 2:
-					// taxi
-					s.setBB(23, 77, 219, 90);
-					break;
-				default:
-					break;
-			}
-
+            // Per texture customisations
+            switch (i_tex)
+            {
+                case 0:
+                    // minivan
+                    s.setBB(35, 80, 195, 80);
+                    break;
+                case 1:
+                    // ute
+                    s.setBB(19, 75, 204, 85);
+                    break;
+                case 2:
+                    // taxi
+                    s.setBB(23, 77, 219, 90);
+                    break;
+                case policeTextureID:
+                    // Spec the police car
+                    s.setBB(77, 23, 90, 219);
+                    s.setXframes(4);
+                    s.setYframes(1);
+                    if (oncoming)
+                    {
+                        s.setDisplayAngleOffsetDegrees(270);
+                    }
+                    else
+                    {
+                        s.setDisplayAngleOffsetDegrees(90);
+                    }
+                    s.setHSoffset(new Vector2(256 / 2, 256 / 2));
+                    if (rand.Next(0, 4) <= 1) // Only some police cars will have lights flashing
+                    {
+                        Vector2[] sequence;
+                        switch (rand.Next(0, 2)) // Different flash sequences the cars can have
+                        {
+                            case 0:
+                                sequence = new Vector2[] {
+                                    new Vector2(0, 0),
+                                    new Vector2(1, 0),
+                                    new Vector2(3, 0),
+                                    new Vector2(2, 0)
+                                };
+                                break;
+                            default:
+                                sequence = new Vector2[] {
+                                    new Vector2(0, 0),
+                                    new Vector2(3, 0),
+                                    new Vector2(1, 0),
+                                    new Vector2(2, 0)
+                                };
+                                break;
+                        }
+                        s.setAnimationSequence(
+                            sequence,
+                            1,
+                            rand.Next(2, 4), // potentially add a bit of a break in there with the "yellow" flash
+                            10);
+                        s.animationStart();
+                    }
+                    break;
+                default:
+                    break;
+            }
 		}
 
 		void createExplosion(Point point)
