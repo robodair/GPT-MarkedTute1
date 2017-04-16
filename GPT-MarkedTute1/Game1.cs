@@ -10,6 +10,7 @@ using RC_Framework;
  * Car sprites - sujit1717 - http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio
  * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
  * Crash sound effect - squareal - https://freesound.org/people/squareal/sounds/237375/
+ * Powerups - adapted from TRBRY - https://opengameart.org/content/power-up-icons
  */
 
 namespace GPT_MarkedTute1
