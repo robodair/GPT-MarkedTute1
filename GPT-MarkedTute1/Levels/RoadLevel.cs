@@ -19,7 +19,7 @@ namespace GPT_MarkedTute1
         SpriteList oncomingCars;
         SpriteList withCars;
         SpriteList explosions;
-        SpriteList signs;
+        SpriteList roadside;
 
         // Lane Changing Cars
         Sprite3 withLaneChangingCar;
@@ -43,6 +43,9 @@ namespace GPT_MarkedTute1
 
         // Sign Texture
         Texture2D texSign;
+
+        // Snake Texture
+        Texture2D texSnake;
 
         // BACKGROUND
         private ScrollBackGround roadBackground;
@@ -78,7 +81,7 @@ namespace GPT_MarkedTute1
         int[] withLaneY = { 140, 205 };
         int[] oncomingLaneY = { 273, 336 };
 
-        int[] signLines = { 60, 415 };
+        int[] roadsideLines = { 60, 415 };
 
         int oncomingSpeed = -6;
         int withSpeed = -2;
@@ -177,6 +180,9 @@ namespace GPT_MarkedTute1
             // SIGNS
             texSign = Content.Load<Texture2D>("images/sign");
 
+            // SNAKE
+            texSnake = Content.Load<Texture2D>("images/snake");
+
             // Sound
             crashSound = new LimitSound(Content.Load<SoundEffect>("sfx/carcrash_16"), 1);
             repairSound = new LimitSound(Content.Load<SoundEffect>("sfx/socket_wrench_16"), 1);
@@ -205,7 +211,7 @@ namespace GPT_MarkedTute1
             // Explosions Sprite List
             explosions = new SpriteList(20);
             // Signs Sprite List
-            signs = new SpriteList(8);
+            roadside = new SpriteList(8);
 
             // TIMERS
             withCarSpawnTimer = withCarSpawnInterval;
@@ -423,9 +429,10 @@ namespace GPT_MarkedTute1
             roadBackground.Update(gameTime);
 
             // ==== SIGNS MOVEMENT ====
-            signs.Update(gameTime);
-            signs.moveDeltaXY();
-            signs.removeIfOutside(carArea);
+            roadside.Update(gameTime);
+            roadside.moveDeltaXY();
+            roadside.removeIfOutside(carArea);
+            roadside.animationTick();
 
             // ==== SPAWN SPRITES ====
             withCarSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -448,7 +455,7 @@ namespace GPT_MarkedTute1
             if (signSpawnTimer < 0)
             {
 
-                createSign();
+                createRoadsideObject();
                 signSpawnTimer = signSpawnInterval;
             }
 
@@ -568,7 +575,7 @@ namespace GPT_MarkedTute1
             playerHealthBar.Draw(spriteBatch);
 
             // Draw Signs
-            signs.Draw(spriteBatch);
+            roadside.Draw(spriteBatch);
 
             // Draw Powerups
             powerups.Draw(spriteBatch);
@@ -580,8 +587,8 @@ namespace GPT_MarkedTute1
             // UI Text
             spriteBatch.DrawString(font, message, new Vector2(3, 3), Color.Chocolate);
             spriteBatch.DrawString(font, String.Format(moneyString, money), new Vector2(500, 3), Color.Chocolate);
-            spriteBatch.DrawString(font, "Copyright 2017 - Alisdair Robertson",
-                                   new Vector2(3, graphicsManager.PreferredBackBufferHeight - 23), Color.BurlyWood);
+            spriteBatch.DrawString(font, "2017 - A. Robertson - (B) Sprite Info - (P) Pause - (Arrows) Move - (R) Restart",
+                                   new Vector2(3, graphicsManager.PreferredBackBufferHeight - 23), Color.DarkGoldenrod);
 
             if (drawInfo)
             {
@@ -605,7 +612,7 @@ namespace GPT_MarkedTute1
                     LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphicsManager.PreferredBackBufferWidth,
                                        (float)y, Color.Aqua);
                 }
-                foreach (int y in signLines)
+                foreach (int y in roadsideLines)
                 {
                     LineBatch.drawLine(spriteBatch, 0f, (float)y, (float)graphicsManager.PreferredBackBufferWidth,
                                        (float)y, Color.MediumAquamarine);
@@ -754,15 +761,37 @@ namespace GPT_MarkedTute1
             explosions.addSpriteReuse(s);
         }
 
-        void createSign()
+        void createRoadsideObject()
         {
-            int y = signLines[rand.Next(0, 2)];
-            float scale = 1f;
-            Sprite3 sign = new Sprite3(true, texSign, graphicsManager.PreferredBackBufferWidth + 200, y);
-            sign.setHSoffset(new Vector2(texSign.Width, texSign.Height));
-            sign.setWidthHeight(58 * scale, 55 * scale);
-            sign.setDeltaSpeed(new Vector2(backgroundScrollSpeed + 1.5f, 0));
-            signs.addSpriteReuse(sign);
+            int y = roadsideLines[rand.Next(0, 2)];
+
+            Sprite3 roadsideObject;
+
+            switch (rand.Next(0, 5))
+            {
+                case 0: // Snake
+                    roadsideObject = new Sprite3(true, texSnake, graphicsManager.PreferredBackBufferWidth + 200, y - 20);
+                    roadsideObject.setXframes(10);
+                    roadsideObject.setYframes(1);
+                    Vector2[] sequence = new Vector2[10];
+                    for (int i = 0; i < 10; i++)
+                    {
+                        sequence[i] = new Vector2(i, 0);
+                    }
+                    roadsideObject.setAnimationSequence(sequence, 1, 9, 10);
+                    roadsideObject.animationStart();
+                    roadsideObject.setWidthHeight(35, 35);
+                    break;
+                default:
+                    float scale = 1f;
+                    roadsideObject = new Sprite3(true, texSign, graphicsManager.PreferredBackBufferWidth + 200, y);
+                    roadsideObject.setHSoffset(new Vector2(texSign.Width, texSign.Height));
+                    roadsideObject.setWidthHeight(58 * scale, 55 * scale);
+                    break;
+            }
+
+            roadsideObject.setDeltaSpeed(new Vector2(backgroundScrollSpeed + 1.5f, 0));
+            roadside.addSpriteReuse(roadsideObject);
         }
     }
 }
