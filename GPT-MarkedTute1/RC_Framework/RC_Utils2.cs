@@ -30,10 +30,10 @@ namespace RC_Framework
         public Rect4()
         {
             point = new Vector2[4];
-            for (int i=0; i<4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                point[i].X=0;
-                point[i].Y=0;
+                point[i].X = 0;
+                point[i].Y = 0;
             }
         }
 
@@ -80,12 +80,12 @@ namespace RC_Framework
         /// </summary>
         /// <param name="centerOfRotation"></param>
         /// <param name="angleInRadians"></param>
-        public void rotateRect(Vector2 centerOfRotation,float angleInRadians)
+        public void rotateRect(Vector2 centerOfRotation, float angleInRadians)
         {
-            point[0]=Util.rotatePoint(point[0], centerOfRotation, -angleInRadians);
-            point[1]=Util.rotatePoint(point[1], centerOfRotation, -angleInRadians);
-            point[2]=Util.rotatePoint(point[2], centerOfRotation, -angleInRadians);
-            point[3]=Util.rotatePoint(point[3], centerOfRotation, -angleInRadians);
+            point[0] = Util.rotatePoint(point[0], centerOfRotation, -angleInRadians);
+            point[1] = Util.rotatePoint(point[1], centerOfRotation, -angleInRadians);
+            point[2] = Util.rotatePoint(point[2], centerOfRotation, -angleInRadians);
+            point[3] = Util.rotatePoint(point[3], centerOfRotation, -angleInRadians);
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace RC_Framework
         {
             float Top = point[0].Y;
             float Left = point[0].X;
-            float Bottom=point[0].Y;
-            float Right=point[0].X;
+            float Bottom = point[0].Y;
+            float Right = point[0].X;
 
             if (point[1].X < Left) Left = point[1].X;
             if (point[2].X < Left) Left = point[2].X;
@@ -128,11 +128,11 @@ namespace RC_Framework
 
             // now have bounds in Top, left bottomm and right - covert to rectangle
 
-            return new Rectangle((int)Left,(int)Top,(int)(Right-Left),(int)(Bottom-Top));
+            return new Rectangle((int)Left, (int)Top, (int)(Right - Left), (int)(Bottom - Top));
         }
     }
 
-  // ------------------------------- Util Class ------------------------------------------------------------------------
+    // ------------------------------- Util Class ------------------------------------------------------------------------
 
     /// <summary>
     /// Just a utility class for staic common usefull methods
@@ -142,7 +142,7 @@ namespace RC_Framework
 
         public static double epsilon = 0.001; // for the aproximately equal routines 
         public static float epsilonf = 0.001f; // for the aproximately equal routines 
-        
+
         /// <summary>
         /// Pythagorean distance
         /// </summary>
@@ -273,23 +273,23 @@ namespace RC_Framework
             // compute scale factors
             float scaleX = destwidth / sourceframe.Width;
             float scaleY = destheight / sourceframe.Height;
-            
+
 
             // compute dest HS 
             destHS.X = hotspot.X - sourceframe.X;
             destHS.Y = hotspot.Y - sourceframe.Y;
 
             //compute dest Rectangle
-            dest.X = (int)((pos.X - destHS.X * scaleX)-(sourceframe.X * scaleX));
-            dest.Y = (int)((pos.Y - destHS.Y * scaleY)-(sourceframe.Y * scaleY));
-            dest.Width = (int)destwidth; 
+            dest.X = (int)((pos.X - destHS.X * scaleX) - (sourceframe.X * scaleX));
+            dest.Y = (int)((pos.Y - destHS.Y * scaleY) - (sourceframe.Y * scaleY));
+            dest.Width = (int)destwidth;
             dest.Height = (int)destheight;
 
             // compute dest BB
             destBB.X = (int)(pos.X + (sourceBB.X - sourceframe.X) * scaleX - destHS.X * scaleX);
             destBB.Y = (int)(pos.Y + (sourceBB.Y - sourceframe.Y) * scaleY - destHS.Y * scaleY);
-            destBB.Width = (int)(sourceBB.Width*scaleX);
-            destBB.Height = (int)(sourceBB.Height*scaleY);
+            destBB.Width = (int)(sourceBB.Width * scaleX);
+            destBB.Height = (int)(sourceBB.Height * scaleY);
         }
 
         /// <summary>
@@ -329,19 +329,19 @@ namespace RC_Framework
         /// <returns>A valid dir path ending with \ or "" </returns>
         public static string findDirWithFile(string fname)
         {
-            string p0 = @".\" ;
+            string p0 = @".\";
             if (File.Exists(p0 + fname)) { return p0; }
-            string p1 = @".\..\" ;
-            if (File.Exists(p1 + fname)) { return p1; }            
-            string p2 = @".\..\..\" ;
-            if (File.Exists(p2 + fname)) { return p2; }            
-            string p3 = @".\..\..\..\" ;            
-            if (File.Exists(p3 + fname)) { return p3; }           
-            string p4 = @".\..\..\..\..\" ;
-            if (File.Exists(p4 + fname)) { return p4; }           
-            string p5 = @".\..\..\..\..\..\" ;
-            if (File.Exists(p5 + fname)) { return p5; }   
-            string p6 = @".\..\..\..\..\..\..\" ;
+            string p1 = @".\..\";
+            if (File.Exists(p1 + fname)) { return p1; }
+            string p2 = @".\..\..\";
+            if (File.Exists(p2 + fname)) { return p2; }
+            string p3 = @".\..\..\..\";
+            if (File.Exists(p3 + fname)) { return p3; }
+            string p4 = @".\..\..\..\..\";
+            if (File.Exists(p4 + fname)) { return p4; }
+            string p5 = @".\..\..\..\..\..\";
+            if (File.Exists(p5 + fname)) { return p5; }
+            string p6 = @".\..\..\..\..\..\..\";
             if (File.Exists(p6 + fname)) { return p6; }
             string p7 = @".\..\..\..\..\..\..\..\";
             if (File.Exists(p7 + fname)) { return p7; }
@@ -360,26 +360,26 @@ namespace RC_Framework
         public static string findDirWithFileExe(string fname)
         {
             //string p = System.IO.Path.GetDirectoryName(Application.ExecutablePath); 
-            string p =System.IO.Directory.GetCurrentDirectory();
-            string p0 = p+@"\";
+            string p = System.IO.Directory.GetCurrentDirectory();
+            string p0 = p + @"\";
             if (File.Exists(p0 + fname)) { return p0; }
-            string p1 = p+@"\..\";
+            string p1 = p + @"\..\";
             if (File.Exists(p1 + fname)) { return p1; }
-            string p2 = p+@"\..\..\";
+            string p2 = p + @"\..\..\";
             if (File.Exists(p2 + fname)) { return p2; }
-            string p3 = p+@"\..\..\..\";
+            string p3 = p + @"\..\..\..\";
             if (File.Exists(p3 + fname)) { return p3; }
-            string p4 = p+@"\..\..\..\..\";
+            string p4 = p + @"\..\..\..\..\";
             if (File.Exists(p4 + fname)) { return p4; }
-            string p5 = p+@"\..\..\..\..\..\";
+            string p5 = p + @"\..\..\..\..\..\";
             if (File.Exists(p5 + fname)) { return p5; }
-            string p6 = p+@"\..\..\..\..\..\..\";
+            string p6 = p + @"\..\..\..\..\..\..\";
             if (File.Exists(p6 + fname)) { return p6; }
-            string p7 = p+@"\..\..\..\..\..\..\..\";
+            string p7 = p + @"\..\..\..\..\..\..\..\";
             if (File.Exists(p7 + fname)) { return p7; }
-            string p8 = p+@"\..\..\..\..\..\..\..\..\";
+            string p8 = p + @"\..\..\..\..\..\..\..\..\";
             if (File.Exists(p8 + fname)) { return p8; }
-            string p9 = p+@"\..\..\..\..\..\..\..\..\..\";
+            string p9 = p + @"\..\..\..\..\..\..\..\..\..\";
             if (File.Exists(p9 + fname)) { return p9; }
             return "";
         }
@@ -394,45 +394,45 @@ namespace RC_Framework
         /// <returns></returns>
         public static int ChangeColourInTexturePNG(Texture2D tex, Color cToReplace, Color cToWrite) // new color(0,0,0,0)
         {
-        uint[] pixelData;
-        int i = 0;
-        //int x,y = 0;
-        //Color col;
-        uint temp;
-        uint c1;
-        uint c2;
+            uint[] pixelData;
+            int i = 0;
+            //int x,y = 0;
+            //Color col;
+            uint temp;
+            uint c1;
+            uint c2;
 
-        byte[] cc1=new byte[4];
-        byte[] cc2=new byte[4];
+            byte[] cc1 = new byte[4];
+            byte[] cc2 = new byte[4];
 
-        if (tex.Format != SurfaceFormat.Color) return 0; // throwing an exception might be a better idea than return
-        //Color format is ARGB - in paint.net you need to select 32bit when saving
+            if (tex.Format != SurfaceFormat.Color) return 0; // throwing an exception might be a better idea than return
+                                                             //Color format is ARGB - in paint.net you need to select 32bit when saving
 
-        cc1[3]=cToReplace.A;
-        cc1[2]=cToReplace.R;
-        cc1[1]=cToReplace.G;
-        cc1[0]=cToReplace.B;
-        c1=BitConverter.ToUInt32(cc1,0);
+            cc1[3] = cToReplace.A;
+            cc1[2] = cToReplace.R;
+            cc1[1] = cToReplace.G;
+            cc1[0] = cToReplace.B;
+            c1 = BitConverter.ToUInt32(cc1, 0);
 
-        cc2[3] = cToWrite.A;
-        cc2[2] = cToWrite.R;
-        cc2[1] = cToWrite.G;
-        cc2[0] = cToWrite.B;
-        c2=BitConverter.ToUInt32(cc2,0);
+            cc2[3] = cToWrite.A;
+            cc2[2] = cToWrite.R;
+            cc2[1] = cToWrite.G;
+            cc2[0] = cToWrite.B;
+            c2 = BitConverter.ToUInt32(cc2, 0);
 
-        pixelData  = new uint[tex.Width * tex.Height];
-        tex.GetData(pixelData, 0, tex.Width * tex.Height);
+            pixelData = new uint[tex.Width * tex.Height];
+            tex.GetData(pixelData, 0, tex.Width * tex.Height);
 
-        for (int xx = 0; xx < tex.Width; xx++)
-        {
-            for (int yy = 0; yy <tex.Height; yy++)
+            for (int xx = 0; xx < tex.Width; xx++)
             {
-            temp=pixelData[xx+yy*tex.Width];
-            if (temp == c1) pixelData[xx+yy*tex.Width]=c2;
+                for (int yy = 0; yy < tex.Height; yy++)
+                {
+                    temp = pixelData[xx + yy * tex.Width];
+                    if (temp == c1) pixelData[xx + yy * tex.Width] = c2;
+                }
             }
-        }
-        tex.SetData(pixelData);
-        return i;
+            tex.SetData(pixelData);
+            return i;
         }
 
         /*
@@ -521,14 +521,14 @@ namespace RC_Framework
             switch (subLocNum)
             {
                 case 1: { return new Vector2(r.X + r.Width / 2, r.Y); }
-                case 2: { return new Vector2(r.X + r.Width , r.Y); }
-                case 3: { return new Vector2(r.X + r.Width , r.Y + r.Height/2); }
-                case 4: { return new Vector2(r.X + r.Width , r.Y + r.Height); }
+                case 2: { return new Vector2(r.X + r.Width, r.Y); }
+                case 3: { return new Vector2(r.X + r.Width, r.Y + r.Height / 2); }
+                case 4: { return new Vector2(r.X + r.Width, r.Y + r.Height); }
                 case 5: { return new Vector2(r.X + r.Width / 2, r.Y + r.Height); }
-                case 6: { return new Vector2(r.X , r.Y + r.Height); }
-                case 7: { return new Vector2(r.X , r.Y + r.Height/2); }
-                case 8: { return new Vector2(r.X , r.Y); }
-                default : { return new Vector2(r.X + r.Width / 2, r.Y + r.Height/2); } // default is middle
+                case 6: { return new Vector2(r.X, r.Y + r.Height); }
+                case 7: { return new Vector2(r.X, r.Y + r.Height / 2); }
+                case 8: { return new Vector2(r.X, r.Y); }
+                default: { return new Vector2(r.X + r.Width / 2, r.Y + r.Height / 2); } // default is middle
             }
         }
 
@@ -540,9 +540,9 @@ namespace RC_Framework
         /// <returns></returns>
         public static Color lighterOrDarker(Color c, float amount)
         {
-            float r = (c.R * amount); if(r>255) r=255;
-            float g = (c.G * amount); if(g>255) g=255;
-            float b = (c.B * amount); if(b>255) b=255;
+            float r = (c.R * amount); if (r > 255) r = 255;
+            float g = (c.G * amount); if (g > 255) g = 255;
+            float b = (c.B * amount); if (b > 255) b = 255;
             Color retv = new Color((byte)r, (byte)g, (byte)b, c.A);
             return retv;
         }
@@ -585,9 +585,9 @@ namespace RC_Framework
         /// <returns></returns>
         public static Rectangle newRectangleBeside(Rectangle r, int dirX, int dirY, int gap)
         {
-            int x = r.X+(dirX*r.Width)+(dirX*gap);
+            int x = r.X + (dirX * r.Width) + (dirX * gap);
             int y = r.Y + (dirY * r.Height) + (dirY * gap);
-            return new Rectangle(x,y, r.Width, r.Height);
+            return new Rectangle(x, y, r.Width, r.Height);
         }
 
         /// <summary>
@@ -602,9 +602,9 @@ namespace RC_Framework
         {
             int x = r.X + gapX;
             int y = r.Y + gapY;
-            return new Rectangle(x, y, r.Width+(gapX*2), r.Height+(gapY*2));
+            return new Rectangle(x, y, r.Width + (gapX * 2), r.Height + (gapY * 2));
         }
- 
+
 
 
         // *********************** Equality routines ****************************************************
@@ -617,7 +617,7 @@ namespace RC_Framework
         /// <param name="epsilon"></param>
         /// <returns></returns>
         public static bool aequal(int v1, int v2, int epsilon)
-        {            
+        {
             // aproximately equal
             if (Math.Abs(v1 - v2) <= epsilon) return true;
             return false;
@@ -824,7 +824,7 @@ namespace RC_Framework
                  Vector2 p2, Vector2 p3)
         {
             int rc;
-            double x=0,y=0;
+            double x = 0, y = 0;
             rc = intersect2D(ref x, ref y,
                 p0.X, p0.Y, p1.X, p1.Y,
                 p2.X, p2.Y, p3.X, p3.Y);
@@ -889,8 +889,8 @@ namespace RC_Framework
         }
 
         /// <summary>
-        /// Check if a line intersects with a circle
         /// Inspired by: http://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
+        /// Check if a line intersects with a circle
         /// </summary>
         /// <returns><c>true</c>, if line intersects the circle, <c>false</c> otherwise.</returns>
         /// <param name="circleCenter">Circle center.</param>
@@ -969,7 +969,7 @@ namespace RC_Framework
             Rectangle rr0 = r0.getAABoundingRect();
             Rectangle rr1 = r1.getAABoundingRect();
             if (!rr0.Intersects(rr1)) return false; // they cant colide the aa's dont collide
-           // if (rr0.Intersects(rr1)) return true; // they cant colide the aa's dont collide
+                                                    // if (rr0.Intersects(rr1)) return true; // they cant colide the aa's dont collide
 
             if (insidePoly(r1.point[0], r0.point, 4)) return true;
             if (insidePoly(r1.point[1], r0.point, 4)) return true;
@@ -1004,7 +1004,7 @@ namespace RC_Framework
                 // construct a line for r0 point i to j
                 int j = i + 1;
                 if (j > 3) j = 0;
-                Vector2 cp=new Vector2(0,0);
+                Vector2 cp = new Vector2(0, 0);
                 int rc0 = intersect2D(ref cp, r0.point[i], r0.point[j], r1.point[0], r1.point[1]); if (rc0 != 3) return true;
                 int rc1 = intersect2D(ref cp, r0.point[i], r0.point[j], r1.point[1], r1.point[2]); if (rc1 != 3) return true;
                 int rc2 = intersect2D(ref cp, r0.point[i], r0.point[j], r1.point[2], r1.point[3]); if (rc2 != 3) return true;
@@ -1054,7 +1054,7 @@ namespace RC_Framework
         public Rectangle innerRectangleOfCircle(Vector2 centerOfCircle, float radius)
         {
             float sin45 = 0.7071f;
-            Rectangle retv = new Rectangle((int)(centerOfCircle.X-radius*sin45), (int)(centerOfCircle.Y-radius*sin45),(int)(radius*sin45),(int)(radius*sin45));
+            Rectangle retv = new Rectangle((int)(centerOfCircle.X - radius * sin45), (int)(centerOfCircle.Y - radius * sin45), (int)(radius * sin45), (int)(radius * sin45));
             return retv;
         }
 
@@ -1065,8 +1065,8 @@ namespace RC_Framework
         /// <param name="radius"></param>
         /// <returns></returns>
         public Rectangle outerRectangleOfCircle(Vector2 centerOfCircle, float radius)
-        {        
-            Rectangle retv = new Rectangle((int)(centerOfCircle.X-radius), (int)(centerOfCircle.Y-radius), (int)radius, (int)radius);
+        {
+            Rectangle retv = new Rectangle((int)(centerOfCircle.X - radius), (int)(centerOfCircle.Y - radius), (int)radius, (int)radius);
             return retv;
         }
 
@@ -1097,13 +1097,13 @@ namespace RC_Framework
         /// <returns></returns>
         public bool collideCircleCircle(Vector2 centerOfCircle1, float radius1, Vector2 centerOfCircle2, float radius2)
         {
-           float d = dist(centerOfCircle1, centerOfCircle2);
-           if (d < (radius1+radius2)) return true;
-           return false;
+            float d = dist(centerOfCircle1, centerOfCircle2);
+            if (d < (radius1 + radius2)) return true;
+            return false;
         }
 
 
-// ********************** load routines to help XNA ***********************************************************
+        // ********************** load routines to help XNA ***********************************************************
 
         public static Texture2D texFromFile(GraphicsDevice gd, String fName)
         {
@@ -1114,7 +1114,7 @@ namespace RC_Framework
             return rc;
         }
 
-// ********************************* timing functions ****************************************
+        // ********************************* timing functions ****************************************
         public static int secondsToTicks(float seconds, int ticksPerSecond)
         {
             return (int)(seconds * ticksPerSecond);
@@ -1129,7 +1129,7 @@ namespace RC_Framework
 
 
 
-// ********** some formatting commands to help my memory - no real reason for their existence except my memory **************
+        // ********** some formatting commands to help my memory - no real reason for their existence except my memory **************
 
         public static string dbl0(double dd) // float 0 decimal places
         {
@@ -1171,7 +1171,7 @@ namespace RC_Framework
 
         public static string int5(int dd) // five digit integer
         {
-             return String.Format("{0,5}", dd);
+            return String.Format("{0,5}", dd);
         }
 
         public static string int6(int dd) // six digit integer

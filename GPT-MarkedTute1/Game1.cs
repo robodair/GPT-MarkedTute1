@@ -17,113 +17,113 @@ using RC_Framework;
 
 namespace GPT_MarkedTute1
 {
-	/// <summary>
-	/// This is the main type for your game.
-	/// </summary>
-	public class Game1 : Game
-	{
-		int levelCounter = 0;
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+    /// <summary>
+    /// This is the main type for your game.
+    /// </summary>
+    public class Game1 : Game
+    {
+        int levelCounter = 0;
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
 
-		RC_GameStateManager levelManager;
+        RC_GameStateManager levelManager;
 
-		KeyboardState keyboardState;
-		KeyboardState prevKeyboardState;
+        KeyboardState keyboardState;
+        KeyboardState prevKeyboardState;
 
-		public Game1()
-		{
-			graphics = new GraphicsDeviceManager(this);
-			RC_GameStateParent.graphicsManager = graphics;
-			Content.RootDirectory = "Content";
-		}
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            RC_GameStateParent.graphicsManager = graphics;
+            Content.RootDirectory = "Content";
+        }
 
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
-		protected override void Initialize()
-		{
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
+        protected override void Initialize()
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			levelManager = new RC_GameStateManager();
+            levelManager = new RC_GameStateManager();
 
-			levelManager.AddLevel(levelCounter, new StartSplashScreen());
-			levelCounter++;
+            levelManager.AddLevel(levelCounter, new StartSplashScreen());
+            levelCounter++;
 
-			levelManager.AddLevel(levelCounter, new PauseOverlay());
-			levelCounter++;
+            levelManager.AddLevel(levelCounter, new PauseOverlay());
+            levelCounter++;
 
-			levelManager.AddLevel(levelCounter, new RoadLevel());
+            levelManager.AddLevel(levelCounter, new RoadLevel());
 
-			for (int i = 0; i <= levelCounter; i++)
-			{
-				levelManager.getLevel(i).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
-			}
+            for (int i = 0; i <= levelCounter; i++)
+            {
+                levelManager.getLevel(i).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
+            }
 
-			levelManager.setLevel(2);
-			levelManager.pushLevel(0);
+            levelManager.setLevel(2);
+            levelManager.pushLevel(0);
 
-			UtilTexSI.initTextures(GraphicsDevice);
+            UtilTexSI.initTextures(GraphicsDevice);
 
-			base.Initialize();
-		}
+            base.Initialize();
+        }
 
-		/// <summary>
-		/// LoadContent will be called once per game and is the place to load
-		/// all of your content.
-		/// </summary>
-		protected override void LoadContent()
-		{
-			RC_GameStateParent.font = Content.Load<SpriteFont>("fonts/SpriteFont");
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            RC_GameStateParent.font = Content.Load<SpriteFont>("fonts/SpriteFont");
 
-			for (int i = 0; i <= levelCounter; i++)
-			{
-				levelManager.getLevel(i).LoadContent();
-			}
+            for (int i = 0; i <= levelCounter; i++)
+            {
+                levelManager.getLevel(i).LoadContent();
+            }
 
-			base.LoadContent();
-		}
+            base.LoadContent();
+        }
 
-		/// <summary>
-		/// UnloadContent will be called once per game and is the place to unload
-		/// game-specific content.
-		/// </summary>
-		protected override void UnloadContent()
-		{
-			// TODO: Unload any non ContentManager content here
-		}
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// game-specific content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+        }
 
-		/// <summary>
-		/// Allows the game to run logic such as updating the world,
-		/// checking for collisions, gathering input, and playing audio.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		protected override void Update(GameTime gameTime)
-		{
-			prevKeyboardState = keyboardState;
-			keyboardState = Keyboard.GetState();
-			if (keyboardState.IsKeyDown(Keys.Escape))
-				Exit();
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            prevKeyboardState = keyboardState;
+            keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                Exit();
 
-			levelManager.getCurrentLevel().Update(gameTime);
+            levelManager.getCurrentLevel().Update(gameTime);
 
-			base.Update(gameTime);
-		}
+            base.Update(gameTime);
+        }
 
-		/// <summary>
-		/// This is called when the game should draw itself.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		protected override void Draw(GameTime gameTime)
-		{
-			spriteBatch.Begin();
-			levelManager.getCurrentLevel().Draw(gameTime);
-			spriteBatch.End();
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin();
+            levelManager.getCurrentLevel().Draw(gameTime);
+            spriteBatch.End();
 
-			base.Draw(gameTime);
-		}
-	}
+            base.Draw(gameTime);
+        }
+    }
 }

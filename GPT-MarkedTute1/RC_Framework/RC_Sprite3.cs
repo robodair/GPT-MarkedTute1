@@ -17,7 +17,7 @@ namespace RC_Framework
 
 
     // ************************************************************************************************ //
-    
+
     public class Sprite3Parent : RC_RenderableBounded
     {
 
@@ -164,7 +164,7 @@ namespace RC_Framework
         /// <summary>
         /// Just a version to help code controll
         /// </summary>
-        public const string SpriteVersion ="V3.05";
+        public const string SpriteVersion = "V3.05";
 
         // <summary>
         // this variable called active is available for use by user code and is used to identify
@@ -460,14 +460,14 @@ namespace RC_Framework
         /// Needs the polygon collision utility to use
         /// only partly supported
         /// </summary>
-        public Polygon12 boundingPolyOffsets=null; 
+        public Polygon12 boundingPolyOffsets = null;
 
         /// <summary>
         /// Advanced Bounding box not axis aligned - its in screen pixels
         /// Needs the polygon collision utility to use
         /// only partly supported updated by routine computeBoundingPolyFromPos
         /// </summary>
-        public Polygon12 boundingPoly=null; 
+        public Polygon12 boundingPoly = null;
 
         /// <summary>
         /// The waypoints for the waypoint move routines
@@ -478,13 +478,13 @@ namespace RC_Framework
         /// Internal source rectangle - do not touch unless you know what you are doing
         /// source of image
         /// </summary>
-        public Rectangle src ;
+        public Rectangle src;
 
         /// <summary>
         /// Internal destination rectangle - do not touch unless you know what you are doing
         /// destination of image
         /// </summary>
-        public Rectangle dest ; // destination of image
+        public Rectangle dest; // destination of image
 
         /// <summary>
         /// Internal draw rotation - do not touch unless you know what you are doing
@@ -506,7 +506,7 @@ namespace RC_Framework
                 value.setParent(this);
             }
         }
-  
+
         /// <summary>
         /// This is a property for a second attached renderable
         /// This can be used to show things like life bars or values if hit
@@ -531,7 +531,7 @@ namespace RC_Framework
         /// </summary>
         public Sprite3()
         {
-        initVars();
+            initVars();
         }
 
         /// <summary>
@@ -545,80 +545,80 @@ namespace RC_Framework
         {
             initVars();
             visible = visibleZ;
-            setTexture(texZ,true);
+            setTexture(texZ, true);
             setPos(x, y);
         }
 
 
-       /// <summary>
-       /// named Constructor with level
-       /// </summary>
-       /// <param name="visibleZ"></param>
-       /// <param name="texZ"></param>
-       /// <param name="x"></param>
-       /// <param name="y"></param>
+        /// <summary>
+        /// named Constructor with level
+        /// </summary>
+        /// <param name="visibleZ"></param>
+        /// <param name="texZ"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         /// <param name="nameZ"></param>
         public Sprite3(bool visibleZ, Texture2D texZ, String nameZ, float x, float y)
         {
             initVars();
             visible = visibleZ;
-            setTexture(texZ,true);
-            name=nameZ;
+            setTexture(texZ, true);
+            name = nameZ;
             setPos(x, y);
         }
 
 
         private void initVars()
         {
-        visible=false;
-        active=true;
+            visible = false;
+            active = true;
 
-        name = "";
-        tag = 0;
-        kind=0;
-        state = 0;
+            name = "";
+            tag = 0;
+            kind = 0;
+            state = 0;
 
-        pos.X =0;
-        pos.Y =0;
+            pos.X = 0;
+            pos.Y = 0;
 
-        oldPos.X=0;
-        oldPos.Y=0;
+            oldPos.X = 0;
+            oldPos.Y = 0;
 
-        deltaSpeed.X=0; // the X, y speed (delta x, delta Y)
-        deltaSpeed.Y=0; // the X, y speed (delta x, delta Y)
-        moveAngle=0;
-        moveSpeed=0;
-        displayAngle=0;
-        moveAngleDelta = 0;
-        displayAngleDelta = 0;
+            deltaSpeed.X = 0; // the X, y speed (delta x, delta Y)
+            deltaSpeed.Y = 0; // the X, y speed (delta x, delta Y)
+            moveAngle = 0;
+            moveSpeed = 0;
+            displayAngle = 0;
+            moveAngleDelta = 0;
+            displayAngleDelta = 0;
 
-        Xframes=1; // number of x frames
-        Yframes=1; // number of y frames
-        Xframe=0; // number of the current x frame
-        Yframe=0; // number of the current y frame
-        XframeWidth = 0;
-        YframeHeight = 0;
+            Xframes = 1; // number of x frames
+            Yframes = 1; // number of y frames
+            Xframe = 0; // number of the current x frame
+            Yframe = 0; // number of the current y frame
+            XframeWidth = 0;
+            YframeHeight = 0;
 
-        width=0; //
-        height=0; //
+            width = 0; //
+            height = 0; //
 
-        hotSpotOffset.X=0; // hotspot offset
-        hotSpotOffset.Y=0; // hotspot offset
+            hotSpotOffset.X = 0; // hotspot offset
+            hotSpotOffset.Y = 0; // hotspot offset
 
-        bb.X=0; // Bounding Box offset
-        bb.Y=0; // Bounding Box  offset
-        bb.Width=0; // Bounding Box width
-        bb.Height=0; // Bounding Box height
+            bb.X = 0; // Bounding Box offset
+            bb.Y = 0; // Bounding Box  offset
+            bb.Width = 0; // Bounding Box width
+            bb.Height = 0; // Bounding Box height
 
-        tex = null;
-        colour = Color.White;
-        flip=SpriteEffects.None;
+            tex = null;
+            colour = Color.White;
+            flip = SpriteEffects.None;
 
-        texWidth=0; // Width of the useful part of the texture
-        texHeight=0; // heigth of the useful psrt of the texture
+            texWidth = 0; // Width of the useful part of the texture
+            texHeight = 0; // heigth of the useful psrt of the texture
 
-        TicksToVisible = -1;
-        TicksToInvisible = -1;
+            TicksToVisible = -1;
+            TicksToInvisible = -1;
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace RC_Framework
         public override void restorePosition()
         {
             pos.X = savePos.X;
-            pos.Y = savePos.Y;            
+            pos.Y = savePos.Y;
             displayAngle = saveDisplayAngle;
             moveAngle = saveMoveAngle;
         }
@@ -681,7 +681,7 @@ namespace RC_Framework
                 setBBToWH();
             }
             else
-            {  
+            {
                 tex = tw;
             }
         }
@@ -699,7 +699,7 @@ namespace RC_Framework
         /// </summary>
         public Rectangle imageRectangle()
         {
-            return new Rectangle((int)pos.X,(int)pos.Y,(int)width,(int)height);
+            return new Rectangle((int)pos.X, (int)pos.Y, (int)width, (int)height);
         }
 
 
@@ -714,7 +714,7 @@ namespace RC_Framework
 
             Rectangle src = getActualImageSource();
             Vector2 hs = new Vector2(hotSpotOffset.X, hotSpotOffset.Y);
-                       
+
             Vector2 newhs = new Vector2(0, 0);
 
             Util.computeDestFromSource(src, bb, new Point((int)hs.X, (int)hs.Y), pos, width, height, ref dest, ref retv, ref newhs);
@@ -781,7 +781,7 @@ namespace RC_Framework
         public Vector2 getBoundingBoxMiddle()
         {
             Rectangle r = getBoundingBoxAA();
-            return (new Vector2(r.X+r.Width/2.0f, r.Y+r.Height/2.0f));
+            return (new Vector2(r.X + r.Width / 2.0f, r.Y + r.Height / 2.0f));
         }
 
         // /// <summary>
@@ -833,7 +833,8 @@ namespace RC_Framework
         public bool collisionOfRectWithCircle(Sprite3 s2)
         {
             // Check whether the center of the circle is within the rectangle
-            if (Util.insidePoly(getPos(), s2.bbTemp.point)) {
+            if (Util.insidePoly(getPos(), s2.bbTemp.point))
+            {
                 return true;
             }
             // Check if any of the lines intersect the circle
@@ -882,8 +883,8 @@ namespace RC_Framework
         /// <returns> true if successfull </returns>
         public override bool scrollMove(float x, float y)
         {
-            oldPos.X = oldPos.X+x;
-            oldPos.Y = oldPos.Y+y;
+            oldPos.X = oldPos.X + x;
+            oldPos.Y = oldPos.Y + y;
             pos.X = pos.X + x;
             pos.Y = pos.Y + y;
             return true;
@@ -945,15 +946,15 @@ namespace RC_Framework
         /// <returns> true if we got there </returns>
         public bool moveTo(Vector2 posZ, float speed, bool setDisplayAngle)
         {
-            bool retv = false;            
+            bool retv = false;
             oldPos.X = pos.X;
             oldPos.Y = pos.Y;
-            float dist=(pos-posZ).Length();
-            if (dist < 0.8) 
+            float dist = (pos - posZ).Length();
+            if (dist < 0.8)
                 return true;
             float s = speed;
             if (dist < speed) { s = dist; retv = true; }
-            float moveAngle = angleTo(posZ); 
+            float moveAngle = angleTo(posZ);
             Vector2 temp = Util.moveByAngleDist(pos, moveAngle, s);
             pos.X = temp.X;
             pos.Y = temp.Y;
@@ -967,12 +968,12 @@ namespace RC_Framework
             return retv;
         }
 
- /// <summary>
- /// Moves the sprite towards the waypoint 
- /// </summary>
- /// <param name="wayPoint">the waypoint to move to</param>
- /// <param name="setDisplayAngle">true if you want to orient the sprites display</param>
- /// <returns>true if we got there</returns>
+        /// <summary>
+        /// Moves the sprite towards the waypoint 
+        /// </summary>
+        /// <param name="wayPoint">the waypoint to move to</param>
+        /// <param name="setDisplayAngle">true if you want to orient the sprites display</param>
+        /// <returns>true if we got there</returns>
         public bool moveTo(WayPoint wayPoint, bool setDisplayAngle)
         {
             return moveTo(wayPoint.pos, wayPoint.speed, setDisplayAngle);
@@ -1014,12 +1015,12 @@ namespace RC_Framework
         /// Moves the sprite by the delta x and delta y in deltaSpeed
         /// </summary>
         public void moveByAngleSpeed()
-        {   
+        {
             oldPos.X = pos.X;
             oldPos.Y = pos.Y;
-            Vector2 temp = Util.moveByAngleDist(pos, moveAngle, moveSpeed);            
+            Vector2 temp = Util.moveByAngleDist(pos, moveAngle, moveSpeed);
             pos.X = temp.X;
-            pos.Y = temp.Y; 
+            pos.Y = temp.Y;
         }
 
         /// <summary>
@@ -1047,9 +1048,9 @@ namespace RC_Framework
 
             if (pos.X < r.X) pos.X = pos.X + r.Width;
             if (pos.Y < r.Y) pos.Y = pos.Y + r.Height;
-            if (pos.X > r.X + r.Width) pos.X = pos.X - r.Width; 
+            if (pos.X > r.X + r.Width) pos.X = pos.X - r.Width;
             if (pos.Y > r.Y + r.Height) pos.Y = pos.Y - r.Height;
-            
+
             return;
         }
 
@@ -1150,13 +1151,13 @@ namespace RC_Framework
             texHeight = h; // heigth of the useful psrt of the texture
             computeFrameParams();
         }
-        
+
         /// <summary>
         /// Just sets the active part of the texture to the whole texture
         /// </summary>
         public void setWidthHeightOfTexToTex()
         {
-            if (tex != null) setWidthHeightOfTex(tex.Width,tex.Height); // heigth of the useful psrt of the texture
+            if (tex != null) setWidthHeightOfTex(tex.Width, tex.Height); // heigth of the useful psrt of the texture
         }
 
         /// <summary>
@@ -1244,7 +1245,7 @@ namespace RC_Framework
             if (visible && active && tex != null)
             {
                 prepareToDraw();
-                sb.Draw(tex, dest,src, getColor(), displayAngle+displayAngleOffset, rotateImage, flip, 0.5f);
+                sb.Draw(tex, dest, src, getColor(), displayAngle + displayAngleOffset, rotateImage, flip, 0.5f);
                 if (attachedRenderable != null) attachedRenderable.Draw(sb);
                 if (attachedRenderable2 != null) attachedRenderable2.Draw(sb);
             }
@@ -1257,7 +1258,7 @@ namespace RC_Framework
         public Vector2 getRotateImage()
         {
             Vector2 retv = new Vector2();
-            if (Xframes==1 && Yframes==1)
+            if (Xframes == 1 && Yframes == 1)
             {
                 retv.X = hotSpotOffset.X;
                 retv.Y = hotSpotOffset.Y;
@@ -1332,8 +1333,8 @@ namespace RC_Framework
         {
             bb.X = 0;
             bb.Y = 0;
-            bb.Width = (int)(texWidth/Xframes); // Bounding Box width 
-            bb.Height = (int)(texWidth/Yframes); // Bounding Box height
+            bb.Width = (int)(texWidth / Xframes); // Bounding Box width 
+            bb.Height = (int)(texWidth / Yframes); // Bounding Box height
         }
 
         /// <summary>
@@ -1371,8 +1372,8 @@ namespace RC_Framework
         {
             bb.Width = Convert.ToInt32(tex.Width * f); // Bounding Box width 
             bb.Height = Convert.ToInt32(tex.Height * f); // Bounding Box height           
-            bb.X = (int)Math.Round(tex.Width * (1 - f)/2.0); // 
-            bb.Y = (int)Math.Round(tex.Height * (1 - f)/2.0); // 
+            bb.X = (int)Math.Round(tex.Width * (1 - f) / 2.0); // 
+            bb.Y = (int)Math.Round(tex.Height * (1 - f) / 2.0); // 
             hotSpotOffset.X = tex.Width / 2;
             hotSpotOffset.Y = tex.Height / 2;
         }
@@ -1387,16 +1388,16 @@ namespace RC_Framework
             return bb;
         }
 
-  
+
         /// <summary>
         /// Set the hotspot offset 
         /// Note that this is in original image pixels not pixels after resize 
         /// </summary>
         /// <param name="offset"></param>
-        public void  setHSoffset(Vector2 offset)
+        public void setHSoffset(Vector2 offset)
         {
-        hotSpotOffset.X=offset.X;
-        hotSpotOffset.Y=offset.Y;
+            hotSpotOffset.X = offset.X;
+            hotSpotOffset.Y = offset.Y;
         }
 
         /// <summary>
@@ -1437,9 +1438,9 @@ namespace RC_Framework
         /// <param name="sb"></param>
         /// <param name="colorBB"></param>
         /// <param name="colorHS"></param>
-        public void drawInfo(SpriteBatch sb, Color colorBB, Color colorHS)  
+        public void drawInfo(SpriteBatch sb, Color colorBB, Color colorHS)
         {
-            drawBB(sb,colorBB);
+            drawBB(sb, colorBB);
             drawHS(sb, colorHS);
         }
 
@@ -1452,7 +1453,7 @@ namespace RC_Framework
         {
             if (boundingSphereRadius > 0)
             {
-                LineBatch.drawCircle(sb,colorBS,new Vector2(pos.X,pos.Y),boundingSphereRadius,19,1);
+                LineBatch.drawCircle(sb, colorBS, new Vector2(pos.X, pos.Y), boundingSphereRadius, 19, 1);
             }
         }
 
@@ -1465,7 +1466,7 @@ namespace RC_Framework
         public void drawBoundingPoly(SpriteBatch sb, Color colorBB, Color colorHS)
         {
             if (boundingPoly != null)
-            {   
+            {
                 drawHS(sb, colorHS);
                 LineBatch.drawPolygon12(sb, boundingPoly, colorBB);
             }
@@ -1488,7 +1489,7 @@ namespace RC_Framework
         /// <param name="ds"></param>
         public void setDeltaSpeed(Vector2 ds)
         {
-            deltaSpeed = new Vector2(ds.X,ds.Y); // the X, y speed (delta x, delta Y)
+            deltaSpeed = new Vector2(ds.X, ds.Y); // the X, y speed (delta x, delta Y)
         }
 
         /// <summary>
@@ -1542,7 +1543,7 @@ namespace RC_Framework
         /// <param name="m"></param>
         public void setMoveSpeed(float m)
         {
-            moveSpeed=m;
+            moveSpeed = m;
         }
 
         /// <summary>
@@ -1628,7 +1629,7 @@ namespace RC_Framework
         {
             return Yframes;
         }
-        
+
         /// <summary>
         /// set the number of vertical frames of animation
         /// </summary>
@@ -1655,7 +1656,7 @@ namespace RC_Framework
         {
             return Yframe;
         }
-        
+
         /// <summary>
         /// Get the current frame number which is an index into the 
         /// animation frame sequence data updated by setAnimationSequence 
@@ -1719,31 +1720,31 @@ namespace RC_Framework
             if (animationSeq == null) return;
             ticks++;
             if (ticksBetweenFrames != 0)
-            if (ticks % ticksBetweenFrames == 0)
-            {
-                frame = frame + 1;
-                if (frame > lastFrame) 
+                if (ticks % ticksBetweenFrames == 0)
                 {
-                // 0=loop
-                // 1=set sprite invisible
-                // 2=set sprite inactive and invisible
-                if (animFinished==0) frame = firstFrame;
-                if (animFinished > 0)
-                {
-                    visible = false;
-                    frame = firstFrame;
-                }
-                if (animFinished == 2)
+                    frame = frame + 1;
+                    if (frame > lastFrame)
                     {
-                        active = false;
-                        visible=false;
-                        frame = firstFrame;
-                    }
+                        // 0=loop
+                        // 1=set sprite invisible
+                        // 2=set sprite inactive and invisible
+                        if (animFinished == 0) frame = firstFrame;
+                        if (animFinished > 0)
+                        {
+                            visible = false;
+                            frame = firstFrame;
+                        }
+                        if (animFinished == 2)
+                        {
+                            active = false;
+                            visible = false;
+                            frame = firstFrame;
+                        }
 
+                    }
+                    Xframe = (int)animationSeq[frame].X;
+                    Yframe = (int)animationSeq[frame].Y;
                 }
-                Xframe = (int)animationSeq[frame].X;
-                Yframe = (int)animationSeq[frame].Y;
-            }
         }
 
         /// <summary>
@@ -1810,7 +1811,7 @@ namespace RC_Framework
         public void alignDisplayAngle()
         {
             if (oldPos.X == pos.X && oldPos.Y == pos.Y) return;
-            setDisplayAngleRadians((float)(angleTo(oldPos)+Math.PI));
+            setDisplayAngleRadians((float)(angleTo(oldPos) + Math.PI));
         }
 
         /// <summary>
@@ -1830,7 +1831,7 @@ namespace RC_Framework
         /// <returns></returns>
         public float angleTo(Vector2 point)
         {
-            return Util.getAngle(point,pos);
+            return Util.getAngle(point, pos);
         }
 
         /// <summary>
@@ -1857,7 +1858,7 @@ namespace RC_Framework
         /// <param name="ticks"></param>
         public void setTicksToVisible(int ticks)
         {
-        TicksToVisible=ticks;
+            TicksToVisible = ticks;
         }
 
         /// <summary>
@@ -1869,8 +1870,8 @@ namespace RC_Framework
         /// <param name="inactive"></param>
         public void setTicksToInvisible(int ticks, bool inactive)
         {
-        TicksToInvisible = ticks;
-        makeInactive=inactive;
+            TicksToInvisible = ticks;
+            makeInactive = inactive;
         }
 
         /// <summary>
