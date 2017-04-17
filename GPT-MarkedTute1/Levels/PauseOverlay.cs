@@ -9,6 +9,7 @@ namespace GPT_MarkedTute1
 	{
 		Rectangle pauseBackground;
 		Vector2 pauseTextPos;
+        Vector2 resumeTextPos;
 
 		public PauseOverlay()
 		{
@@ -33,12 +34,15 @@ namespace GPT_MarkedTute1
 											200, 100);
 			pauseTextPos = new Vector2(graphicsManager.PreferredBackBufferWidth / 2 - 35,
 									   graphicsManager.PreferredBackBufferHeight / 2 - 60);
+            resumeTextPos = pauseTextPos;
+            resumeTextPos.Y += 30;
 		}
 
 		public override void Draw(GameTime gameTime)
 		{
 			spriteBatch.Draw(UtilTexSI.texWhite, pauseBackground, Color.DarkSlateBlue);
-			spriteBatch.DrawString(font, "Paused", pauseTextPos, Color.White);
+            spriteBatch.DrawString(font, "Paused", pauseTextPos, Color.White);
+            spriteBatch.DrawString(font, "(P) To Resume", resumeTextPos, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 		}
 	}
 }
