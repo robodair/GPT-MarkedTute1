@@ -25,9 +25,18 @@ namespace GPT_MarkedTute1
 		Sprite3 withLaneChangingCar;
 		Sprite3 oncomingLaneChangingCar;
 
+        // Powerups
+        SpriteList powerups;
+        const int withPowerupY = 172;
+        const int oncomingPowerupY = 310; 
+
 		// Car Textures
 		Texture2D[] carTextures = new Texture2D[4];
 		HealthBar playerHealthBar;
+
+        // Powerup Textures
+        Texture2D healthTexture;
+        Texture2D moneyTexture;
 
 		// Explosion Texture
 		Texture2D texExplosion;
@@ -39,9 +48,11 @@ namespace GPT_MarkedTute1
 		private ScrollBackGround roadBackground;
 
 		// ENVIRONMENT
-		String distString = "DISTANCE: {0:F2} km";
+        String distString = "DISTANCE: {0:F2} km";
+        String moneyString = "MONEY: ${0:F2}";
 		double distance;
-		String message;
+        double money;
+        String message;
 
 		// Health metrics
 		const int maxPlayerHealth = 1000;
@@ -82,7 +93,14 @@ namespace GPT_MarkedTute1
 		float signSpawnInterval = 3000;
 		float signSpawnTimer;
 
+        float withPowerupSpawnInterval = 1250 * 9;
+        float withPowerupSpawnTimer;
+        float oncomingPowerupSpawnInterval = 400 * 5;
+        float oncomingPowerupSpawnTimer;
+
         LimitSound crashSound;
+        LimitSound repairSound;
+        LimitSound moneySound;
 
 		public RoadLevel() { }
 
@@ -143,6 +161,10 @@ namespace GPT_MarkedTute1
 			playerHealthBar.parent = playerCar;
 			playerHealthBar.offset = new Vector2(0, -12);
 
+            // Powerups
+            healthTexture = Content.Load<Texture2D>("images/repairup");
+            moneyTexture = Content.Load<Texture2D>("images/moneyup");
+
 			// OTHER CARS
 			carTextures[0] = Content.Load<Texture2D>("images/minivan");
 			carTextures[1] = Content.Load<Texture2D>("images/ute");
@@ -157,6 +179,8 @@ namespace GPT_MarkedTute1
 
             // Sound
             crashSound = new LimitSound(Content.Load<SoundEffect>("sfx/carcrash_16"), 1);
+            repairSound = new LimitSound(Content.Load<SoundEffect>("sfx/socket_wrench_16"), 1);
+            moneySound = new LimitSound(Content.Load<SoundEffect>("sfx/cha_ching"), 1);
 
 			Reset();
 
@@ -176,6 +200,8 @@ namespace GPT_MarkedTute1
 			// With Sprite List
 			withCars = new SpriteList(20);
 			withLaneChangingCar = null;
+            // Powerups Sprite List
+            powerups = new SpriteList(20);
 			// Explosions Sprite List
 			explosions = new SpriteList(20);
 			// Signs Sprite List
@@ -185,6 +211,8 @@ namespace GPT_MarkedTute1
 			withCarSpawnTimer = withCarSpawnInterval;
 			oncomingCarSpawnTimer = oncomingCarSpawnInterval;
 			signSpawnTimer = signSpawnInterval;
+            withPowerupSpawnTimer = withPowerupSpawnInterval;
+            oncomingPowerupSpawnTimer = oncomingPowerupSpawnInterval;
 
 			// Player
 			playerCar.hitPoints = maxPlayerHealth;
@@ -193,10 +221,13 @@ namespace GPT_MarkedTute1
 
 			// Scoring
 			distance = 0;
+            money = 0;
 			message = String.Format(distString, distance);
 
             // Stop Sound
             crashSound.StopAll();
+            repairSound.StopAll();
+            moneySound.StopAll();
 		}
 
 		public override void Update(GameTime gameTime)
@@ -305,7 +336,7 @@ namespace GPT_MarkedTute1
 
 			// keep track of distance travelled
 			distance += 0.0005;
-			message = String.Format(distString, distance);
+            message = String.Format(distString, distance);
 
 			// ===== OTHER CARS =====
 			oncomingCars.moveDeltaXY();
@@ -315,6 +346,10 @@ namespace GPT_MarkedTute1
 			withCars.removeIfOutside(carArea);
             withCars.animationTick();
 
+            // ===== POWERUPS =====
+            powerups.moveDeltaXY();
+            powerups.removeIfOutside(carArea);
+
 
 			changeCarLane(ref oncomingLaneChangingCar, oncomingLaneY, ref oncomingCars);
 
@@ -323,6 +358,7 @@ namespace GPT_MarkedTute1
 			// ===== COLLISIONS =====
 			int oncomingCollision = oncomingCars.collisionAA(playerCar);
 			int withCollision = withCars.collisionAA(playerCar);
+            int powerupCollision = powerups.collisionAA(playerCar);
 
 			if (oncomingCollision != -1)
 			{
@@ -353,6 +389,21 @@ namespace GPT_MarkedTute1
 				}
 			}
 
+            if (powerupCollision != -1 && powerups[powerupCollision].collisionOfRectWithCircle(playerCar)) // Check for a circle collision as well!
+            {
+                if (powerups[powerupCollision].getName() == "health")
+                {
+                    repairSound.playSoundIfOk();
+                    playerCar.hitPoints += 200;
+                }
+                else if (powerups[powerupCollision].getName() == "money")
+                {
+                    moneySound.playSoundIfOk();
+                    money += 20;
+                }
+                powerups[powerupCollision].setActive(false);
+            }
+
 			// ==== GAME OVER CONDITION ====
 			if (playerCar.hitPoints <= 0)
 			{
@@ -361,7 +412,7 @@ namespace GPT_MarkedTute1
 			}
 			else
 			{
-				playerCar.hitPoints++;
+				//playerCar.hitPoints++; // NO more health regen, we have powerups for that
 				if (playerCar.hitPoints > maxPlayerHealth)
 				{
 					playerCar.hitPoints = maxPlayerHealth;
@@ -400,6 +451,27 @@ namespace GPT_MarkedTute1
 				createSign();
 				signSpawnTimer = signSpawnInterval;
 			}
+
+            // Spawn powerups
+            withPowerupSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (withPowerupSpawnTimer < 0)
+            {
+                if (Math.Abs(withCarSpawnTimer - withCarSpawnInterval) > 2)
+                {
+                    createNewPowerup(false);
+                }
+                withPowerupSpawnTimer = withPowerupSpawnInterval;
+            }
+
+            oncomingPowerupSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (oncomingPowerupSpawnTimer < 0)
+            {
+                if (Math.Abs(oncomingCarSpawnTimer - oncomingCarSpawnInterval) > 2)
+                {
+                    createNewPowerup(true);
+                }
+                oncomingPowerupSpawnTimer = oncomingPowerupSpawnInterval;
+            }
 
 			base.Update(gameTime);
 		}
@@ -498,12 +570,16 @@ namespace GPT_MarkedTute1
 			// Draw Signs
 			signs.Draw(spriteBatch);
 
+            // Draw Powerups
+            powerups.Draw(spriteBatch);
+
 			// Draw Explosions
 			explosions.Draw(spriteBatch);
 
 
 			// UI Text
 			spriteBatch.DrawString(font, message, new Vector2(3, 3), Color.Chocolate);
+            spriteBatch.DrawString(font, String.Format(moneyString, money), new Vector2(500, 3), Color.Chocolate);
 			spriteBatch.DrawString(font, "Copyright 2017 - Alisdair Robertson",
 								   new Vector2(3, graphicsManager.PreferredBackBufferHeight - 23), Color.BurlyWood);
 
@@ -541,8 +617,40 @@ namespace GPT_MarkedTute1
 				withCars.drawRect4(spriteBatch, Color.HotPink);
 
 				explosions.drawInfo(spriteBatch, Color.MidnightBlue, Color.Black);
+
+                powerups.drawInfo(spriteBatch, Color.Turquoise, Color.Goldenrod);
+                powerups.drawBoundingSphere(spriteBatch, Color.MediumSpringGreen);
 			}
 		}
+
+        void createNewPowerup(bool oncoming)
+        {
+            Texture2D tex;
+            String name;
+            switch (rand.Next(0, 2)){ // 0 is health 1 is money
+                case 0: // Health powerup
+                    tex = healthTexture;
+                    name = "health";
+                    break;
+                default: // Money powerup
+                    tex = moneyTexture;
+                    name = "money";
+                    break;
+            }
+            int yPos = withPowerupY;
+            int speed = withSpeed;
+            if (oncoming)
+            {
+                yPos = oncomingPowerupY;
+                speed = oncomingSpeed;
+            }
+            Sprite3 s = new Sprite3(true, tex, name, graphicsManager.PreferredBackBufferWidth + 200, yPos);
+            s.setHSoffset(new Vector2(tex.Width/2, tex.Height/2));
+            s.setWidthHeight(50, 50);
+            s.setDeltaSpeed(new Vector2(speed, 0));
+            s.boundingSphereRadius = 25;
+            powerups.addSpriteReuse(s);
+        }
 
 		void createNewCar(bool oncoming)
 		{
