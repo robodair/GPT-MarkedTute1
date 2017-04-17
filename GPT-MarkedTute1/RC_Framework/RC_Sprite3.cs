@@ -826,6 +826,28 @@ namespace RC_Framework
         }
 
         /// <summary>
+        /// Returns True if the non axis aligned bounding box of the given sprite (bbTemp) collides with the bounding
+        /// sphere of this sprite
+        /// </summary>
+        /// <param name="s2">S2.</param>
+        public bool collisionOfRectWithCircle(Sprite3 s2)
+        {
+            // Check whether the center of the circle is within the rectangle
+            if (Util.insidePoly(getPos(), s2.bbTemp.point)) {
+                return true;
+            }
+            // Check if any of the lines intersect the circle
+            else if (Util.lineIntersectsCircle(getPos(), boundingSphereRadius, s2.bbTemp.point[0], s2.bbTemp.point[1]) ||
+                 Util.lineIntersectsCircle(getPos(), boundingSphereRadius, s2.bbTemp.point[1], s2.bbTemp.point[2]) ||
+                 Util.lineIntersectsCircle(getPos(), boundingSphereRadius, s2.bbTemp.point[2], s2.bbTemp.point[3]) ||
+                 Util.lineIntersectsCircle(getPos(), boundingSphereRadius, s2.bbTemp.point[3], s2.bbTemp.point[0]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Return a boolean that is true if the point is inside the AA bounding box of the sprite</summary>
         public Boolean inside(float x, float y)
         {

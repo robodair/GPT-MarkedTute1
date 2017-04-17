@@ -667,6 +667,19 @@ namespace RC_Framework
         }
 
         /// <summary>
+        /// Returns the slope of the line from A to B
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <returns></returns>
+        public static double slope(Vector2 A, Vector2 B)
+        {
+            return slope(A.X, B.X, A.Y, B.Y);
+        }
+
+        /// <summary>
         /// Aproximate interection of 2 line segments in 2d 
         /// this returns the following
         /// 0= all ok they inteset and the intersect is in x,y
@@ -827,9 +840,8 @@ namespace RC_Framework
         /// </summary>
         /// <param name="point"></param>
         /// <param name="poly"></param>
-        /// <param name="count"></param>
         /// <returns></returns>
-        public static bool insidePoly(Vector2 point, Vector2[] poly, int count)
+        public static bool insidePoly(Vector2 point, Vector2[] poly)
         {
 
             Vector2 testPoint = new Vector2(poly[0].X, point.Y); // constructs test line
@@ -839,12 +851,12 @@ namespace RC_Framework
             double y = 0;
             double xx = +900000; // remember intesects in case line goes through the conection of two lines and scores twice
             double yy = -900000; // set well outside the range of a screen
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < poly.Length; i++)
             {
                 if (poly[i].X < testPoint.X) testPoint.X = poly[i].X - 1; // guarantees testpoint is outside poly
                 if (poly[i].Y < testPoint.Y) testPoint.Y = poly[i].Y - 1; // guarantees testpoint is outside poly and not a horizontal line which confuses intersect
             }
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < poly.Length; i++)
             {
 
                 k = Util.intersect2D(ref x, ref y, testPoint.X, testPoint.Y, point.X, point.Y,
@@ -857,7 +869,7 @@ namespace RC_Framework
                 }
             }
             k = Util.intersect2D(ref x, ref y, testPoint.X, testPoint.Y, point.X, point.Y,
-                                        poly[count - 1].X, poly[count - 1].Y, poly[0].X, poly[0].Y);
+                                 poly[poly.Length - 1].X, poly[poly.Length - 1].Y, poly[0].X, poly[0].Y);
             if (k == 0 && !(aequal(x, xx, 0.001) && aequal(y, yy, 0.001)))
             {
                 kount++;
@@ -869,6 +881,80 @@ namespace RC_Framework
             {
                 return true;
             }
+            return false;
+        }
+        public static bool insidePoly(Vector2 point, Vector2[] poly, int count)
+        {
+            return insidePoly(point, poly);
+        }
+
+        /// <summary>
+        /// Check if a line intersects with a circle
+        /// Inspired by: http://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
+        /// </summary>
+        /// <returns><c>true</c>, if line intersects the circle, <c>false</c> otherwise.</returns>
+        /// <param name="circleCenter">Circle center.</param>
+        /// <param name="radius">Radius.</param>
+        /// <param name="p1">P1.</param>
+        /// <param name="p2">P2.</param>
+        public static bool lineIntersectsCircle(Vector2 circleCenter, float radius, Vector2 p1, Vector2 p2)
+        {
+            Vector2 intersectionPoint;
+
+            // Check if either end of the line is within the circle
+            if (dist(circleCenter, p1) < radius || dist(circleCenter, p2) < radius)
+            {
+                //Console.WriteLine("Line end was within circle!");
+                return true;
+            }
+            else if (Math.Abs(p1.X - p2.X) < 0.0001) // Vertical line
+            {
+                intersectionPoint = new Vector2(circleCenter.X, p1.Y);
+                //Console.WriteLine("Intersection Point is on vertical line!");
+            }
+            else
+            {
+                // Get the perpendicular foot from the circle center to the line, and check if it is in the center 
+                // AND between the other two points
+
+                // Work out the Slope-intercept form of the target line [y = (gradient * x) + b]
+                double gradient = slope(p1, p2);        // Get slope
+                double b = p1.Y - (gradient * p1.X);    // Sub in a point and solve for b
+
+                // Work out the Slope-intercept form of the perpendicular
+                double perpGradient = -1 / gradient;     // Get slope
+                double perpB = circleCenter.Y - (perpGradient * circleCenter.X);
+
+                // Calculate the point of intersection of the two lines (using simultaneous equations):
+                // (1) y = gradient * x + b
+                // (2) y = perpGradient * x + perpB
+
+                // To get X:
+                // X = (perpB - b) / (gradient - perpGradient)
+                // To get Y sub the now found value of X into the equation
+                double intersectionX = (perpB - b) / (gradient - perpGradient);
+                double intersectionY = gradient * intersectionX + b;
+
+                intersectionPoint = new Vector2((float)intersectionX, (float)intersectionY);
+                //Console.WriteLine("Intersection Point Calculated with simultaneous equations!");
+            }
+
+            // Check that the intersection point is in fact inside the line segment, if it's not, no collision
+            if (intersectionPoint.Y > Math.Max(p1.Y, p2.Y) && intersectionPoint.Y < Math.Min(p1.Y, p2.Y)
+               ||
+               intersectionPoint.X > Math.Max(p1.X, p2.X) && intersectionPoint.X < Math.Min(p1.X, p2.X))
+            {
+                //Console.WriteLine("Intersection is outside line segment! No Collision");
+                return false;
+            }
+
+            // Is distance less than or equal to radius? if so, we have a collision
+            if (dist(circleCenter, intersectionPoint) <= radius)
+            {
+                //Console.WriteLine("Collision!");
+                return true;
+            }
+            //Console.WriteLine("No collision!!");
             return false;
         }
 
@@ -1101,5 +1187,3 @@ namespace RC_Framework
     }
 
 }
-
-// end
