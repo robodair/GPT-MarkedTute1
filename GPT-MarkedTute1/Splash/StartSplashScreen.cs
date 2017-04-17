@@ -12,6 +12,7 @@ namespace GPT_MarkedTute1
 		float titleRot = 0.3f;
 		float titleScale = 2;
 		Vector2 subtitlePos;
+        Vector2 creatorPos;
 
 
 		public StartSplashScreen()
@@ -35,7 +36,10 @@ namespace GPT_MarkedTute1
 								   graphicsManager.PreferredBackBufferHeight / 4 * 1.2f);
 
 			subtitlePos = new Vector2(graphicsManager.PreferredBackBufferWidth / 3,
-									  graphicsManager.PreferredBackBufferHeight / 3 * 1.5f);
+									  graphicsManager.PreferredBackBufferHeight / 2);
+
+            creatorPos = new Vector2(graphicsManager.PreferredBackBufferWidth / 3,
+									  graphicsManager.PreferredBackBufferHeight / 4 * 3);
 
 
 		}
@@ -47,6 +51,8 @@ namespace GPT_MarkedTute1
 			spriteBatch.DrawString(font, "Dangerous Driving", titlePos, Color.Chocolate, 0.3f, Vector2.Zero,
 								   titleScale, SpriteEffects.None, titleRot);
 			spriteBatch.DrawString(font, "Early Access", subtitlePos, Color.Maroon);
+
+            spriteBatch.DrawString(font, "2017 - Alisdair Robertson", creatorPos, Color.DarkGoldenrod);
 
 		}
 
