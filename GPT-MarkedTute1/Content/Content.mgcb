@@ -146,3 +146,15 @@
 /processorParam:TextureFormat=Color
 /build:images/repairup.png
 
+#begin sfx/socket_wrench_16.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx/socket_wrench_16.wav
+
+#begin sfx/cha_ching.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx/cha_ching.wav
+

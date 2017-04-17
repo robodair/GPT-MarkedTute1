@@ -11,6 +11,8 @@ using RC_Framework;
  * Comic Explosion - Pompei2 - http://opengameart.org/content/comic-explosion-kaboom
  * Crash sound effect - squareal - https://freesound.org/people/squareal/sounds/237375/
  * Powerups - adapted from TRBRY - https://opengameart.org/content/power-up-icons
+ * Repair socket wrench sound - kklab5050 - https://freesound.org/people/kklab5050/sounds/120042/
+ * Cash Register cha-ching - creek23 - https://freesound.org/people/creek23/sounds/75235/
  */
 
 namespace GPT_MarkedTute1
